@@ -1,0 +1,47 @@
+.above-top-content-fixed { z-index: 1000000; }
+
+div#wrapper > div#top-content-fixed
+{
+	z-index: 999999;
+}
+div#wrapper > div#top-content-fixed > header#header-fixed
+{
+	height: 50px;
+	top: -100px;
+	padding: 5px 0px;
+	background-color:#181a1c;
+	box-shadow: 0px 4px 5px #9f9f9f;
+	z-index: 999999;
+}
+div#wrapper > header#header-main
+{
+	height: 100px;
+	padding: 10px 0px;
+	background-color: #181a1c;
+	z-index: 1;
+}
+div#wrapper > nav#navbar-main
+{
+	z-index: 1;
+}
+div#wrapper > div#content
+{
+	min-height: 50px;
+	z-index : 1;
+}
+div#wrapper > footer#footer-main
+{
+	min-height: 250px;
+	padding-top: 10px;
+	background-color: #292c2f;
+	z-index: 1;
+}
+
+@media screen and (min-width: 499px)
+{
+	div#wrapper > div#top-content-fixed > header#header-fixed a
+	{
+		line-height: 37px;
+		vertical-align: middle;
+	}
+}

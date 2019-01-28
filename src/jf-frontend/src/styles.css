@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./assets/styles/layout.css";
+@import "./assets/styles/stylization.css";
+@import "./assets/styles/navbar.css";
+@import "./assets/styles/cursor.css";
+
+.icon { font-size: 18px; }

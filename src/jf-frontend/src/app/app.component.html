@@ -1,1 +1,159 @@
-<router-outlet></router-outlet>
+<div id="wrapper" class="border-boxed w-100 h-100">
+	<div id="top-content-fixed" class="border-boxed w-100 position-fixed on-top">
+		<header id="header-fixed" class="border-boxed w-100 position-fixed top-trans-fast">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 text-right">
+						<a href="###/Home/Index"><img src="../assets/res/logo.png" class="img-circle" height="40"></a>
+					</div>
+					<div class="col-xl-8 col-lg-8 col-md-6 col-sm-4 col-2 text-center"></div>
+					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-8 text-center">
+						<!--button type="button" class="btn btn-xs btn-link btn-link-light" onclick="alert('register popup');"><i class="icon ion-ios-person"></i> Sign Up</button>
+						<button type="button" class="btn btn-xs btn-link btn-link-light" onclick="alert('login popup');"><i class="icon ion-ios-log-in"></i> Login</button-->
+						<button type="button" class="btn btn-md btn-link btn-link-light" href="###/ViewProfile"><i class="icon ion-ios-person"></i> Profile</button>
+						<button type="button" class="btn btn-xs btn-link btn-link-light" href="###/Account/Logout"><i class="icon ion-ios-log-out"></i> Log out</button>
+					</div>
+				</div>
+			</div>
+		</header>
+	</div>
+	<header id="header-main" class="border-boxed w-100">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 text-right">
+					<a href="###/Home/Index"><img src="../assets/res/logo.png" class="img-circle" height="80"></a>
+				</div>
+				<div class="d-none d-sm-block col-xl-3 col-lg-3 col-md-3 col-sm-3 text-center">
+				</div>
+				<div class="d-none d-sm-block col-xl-2 col-lg-2 col-md-2 col-sm-1 text-center">
+					<a href="###/Home/Index"><img src="../assets/res/heading.png"></a>
+				</div>
+				<div class="col-xl-5 col-lg-5 col-md-5 col-sm-6 col-10 text-center">
+					
+					<!--div class="row" style="height: 40px; padding-top: 3px;">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<button type="button" class="btn btn-md btn-link btn-link-light" onclick="alert('register popup');"><i class="icon ion-ios-person"></i> Sign up</button>
+						</div>
+					</div>
+					<div class="row" style="height: 40px; padding-top: 3px;">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<button type="button" class="btn btn-md btn-link btn-link-light" onclick="alert('login popup');"><i class="icon ion-ios-log-in"></i> Login</button>
+						</div>
+					</div-->
+					
+					<div class="row" style="height: 40px; padding-top: 3px;">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<button type="button" class="btn btn-md btn-link btn-link-light" href="###/Home/ViewProfile"><i class="icon ion-ios-person"></i> Profile</button>
+						</div>
+					</div>
+					<div class="row" style="height: 40px; padding-top: 3px;">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
+							<button type="button" class="btn btn-md btn-link btn-link-light" href="###/Account/Logout"><i class="icon ion-ios-log-out"></i> Logout</button>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</header>
+	<nav id="navbar-main" class="navbar navbar-expand-sm navbar-dark bg-dark">
+		<div id="nav-control">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-list">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand d-sm-none text-light pl-2">Navigation</a>
+		</div>
+		<div id="nav-list" class="navbar-collapse collapse w-100">
+			<a class="navbar-brand" href="###/Home/Index">Job Fair</a>
+			<a class="nav-item nav-link" href="###/Home/Index"><i class="icon ion-ios-home"></i> Home</a>
+			<a class="nav-item nav-link" href="###/Home/Auction"><i class="icon ion-ios-pie"></i> Other page</a>
+		</div>
+	</nav>
+	<div id="content" class="container">
+		<router-outlet></router-outlet>
+	</div>
+	<footer id="footer-main" class="border-boxed w-100">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+					<div class="row">
+						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-2"></div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-8">
+							<p class="font-cookie font-lg text-light"><i>Job<span class="text-info">Fair</span></i><p>
+							<p class="font-times-new-roman font-xs text-light"><b><a class="hover-text-decor-none text-light" href="###/Home/Index">Home Page</a></b> - <b><a class="hover-text-decor-none text-light" href="#">Blog</a></b></p>
+							<p class="font-times-new-roman font-xs text-light">ETF © 2019</p>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-2"></div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+					<div class="row mt-3">
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 text-right">
+							<i class="fa fa-map-marker icon-square-md"></i>
+						</div>
+						<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 text-left">
+							<p class="m-0 font-times-new-roman font-xs text-light">
+								Bulevar kralja Aleksandra 73
+							</p>
+							<p class="m-0 font-times-new-roman font-xs text-light">
+								<b>Belgrade, Republic of Serbia</b>
+							</p>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 text-right">
+							<i class="fa fa-phone icon-square-md"></i>
+						</div>
+						<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 text-left">
+							<p class="font-times-new-roman font-sm text-light">
+								<b>+381 11/32-26-992</b>
+							</p>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 text-right">
+							<i class="fa fa-envelope icon-square-md"></i>
+						</div>
+						<div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 text-left">
+							<p class="font-times-new-roman font-sm text-light">
+								<b><a class="hover-text-decor-none text-light" href="mailto:#">dekanat@etf.rs</a></b>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+					<div class="row">
+						<div class="col-xl-3 col-lg-3 col-md-2 col-sm-3 col-2"></div>
+						<div class="col-xl-6 col-lg-6 col-md-8 col-sm-6 col-8">
+							<div class="row mt-1">
+								<p class="font-times-new-roman font-sm text-light">Job Fair</p>
+							</div>
+							<div class="row mt-1">
+								<p class="font-times-new-roman font-xs text-light">
+									Student project in Internet Applications<br />
+									Designed by Vladimir Sivčev<br />
+									Developed by Vladimir Sivčev
+								</p>
+							</div>
+							<div class="row mt-1">
+								<a href="#"><i class="fa fa-facebook icon-oval-md"></i></a>
+								<a href="#"><i class="fa fa-linkedin icon-oval-md"></i></a>
+								<a href="#"><i class="fa fa-github icon-oval-md"></i></a>
+							</div>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-2 col-sm-3 col-2"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row d-md-none" style="height: 10px;"></div>
+		</div>
+	</footer>
+</div>
