@@ -1,5 +1,3 @@
-.above-top-content-fixed { z-index: 1000000; }
-
 div#wrapper > div#top-content-fixed
 {
 	z-index: 999999;

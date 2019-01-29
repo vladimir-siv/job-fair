@@ -1,0 +1,20 @@
+<div bsModal #this="bs-modal" [config]="{backdrop: 'static', ignoreBackdropClick: true}" class="modal fade bring-to-front" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<ng-container *ngIf="feed">
+				<div class="modal-header">
+					<ng-container *ngTemplateOutlet="feed.header; context: this"></ng-container>
+				</div>
+				<div class="modal-body">
+					<ng-container *ngTemplateOutlet="feed.body; context: this"></ng-container>
+				</div>
+				<div class="modal-footer">
+					<ng-container *ngTemplateOutlet="feed.footer; context: this"></ng-container>
+				</div>
+				<div class="container-fluid">
+					<ng-container *ngTemplateOutlet="feed.status; context: this"></ng-container>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>

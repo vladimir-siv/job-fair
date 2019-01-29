@@ -1,4 +1,7 @@
-import { Component, AfterViewInit } from "@angular/core";
+import { DependencyInjectionContext } from './DependencyInjection/DependencyInjectionContext';
+import { Component, AfterViewInit, ViewChild } from "@angular/core";
+import { PopupComponent } from "./popups/popup/popup.component";
+import { LoginPopupFeedComponent } from './popups/login-popup-feed/login-popup-feed.component';
 import * as JQ from "jquery";
 
 @Component
@@ -9,26 +12,40 @@ import * as JQ from "jquery";
 })
 export class AppComponent implements AfterViewInit
 {
-	win: JQuery<Window> = JQ(window);
-	doc: JQuery<Document> = JQ(document);
-	body: JQuery<HTMLElement> = JQ();
+	public constructor() { DependencyInjectionContext.init(this); }
 	
-	fixed: JQuery<HTMLElement> = JQ();
-	wrapper: JQuery<HTMLElement> = JQ();
-	header: JQuery<HTMLElement> = JQ();
-	navbar: JQuery<HTMLElement> = JQ();
-	content: JQuery<HTMLElement> = JQ();
-	footer: JQuery<HTMLElement> = JQ();
+	@ViewChild("popup") private popup: PopupComponent
+	@ViewChild("login") private loginFeed: LoginPopupFeedComponent;
+	
+	private win: JQuery<Window> = JQ(window);
+	public get window(): JQuery<Window> { return this.win; }
+	private doc: JQuery<Document> = JQ(document);
+	public get document(): JQuery<Document> { return this.doc; }
+	
+	private _body: JQuery<HTMLElement>;
+	public get body(): JQuery<HTMLElement> { return this._body; }
+	private _fixed: JQuery<HTMLElement>;
+	public get fixed(): JQuery<HTMLElement> { return this._fixed; }
+	private _wrapper: JQuery<HTMLElement>;
+	public get wrapper(): JQuery<HTMLElement> { return this._wrapper; }
+	private _header: JQuery<HTMLElement>;
+	public get header(): JQuery<HTMLElement> { return this._header; }
+	private _navbar: JQuery<HTMLElement>;
+	public get navbar(): JQuery<HTMLElement> { return this._navbar; }
+	private _content: JQuery<HTMLElement>;
+	public get content(): JQuery<HTMLElement> { return this._content; }
+	private _footer: JQuery<HTMLElement>;
+	public get footer(): JQuery<HTMLElement> { return this._footer; }
 	
 	ngAfterViewInit()
 	{
-		this.body = JQ(document.body);
-		this.fixed = this.body.find("div#wrapper > div#top-content-fixed > header#header-fixed");
-		this.wrapper = this.body.find("div#wrapper");
-		this.header = this.body.find("div#wrapper > header#header-main");
-		this.navbar = this.body.find("div#wrapper > nav#navbar-main");
-		this.content = this.body.find("div#wrapper > div#content");
-		this.footer = this.body.find("div#wrapper > footer#footer-main");
+		this._body = JQ(document.body);
+		this._fixed = this._body.find("div#wrapper > div#top-content-fixed > header#header-fixed");
+		this._wrapper = this._body.find("div#wrapper");
+		this._header = this._body.find("div#wrapper > header#header-main");
+		this._navbar = this._body.find("div#wrapper > nav#navbar-main");
+		this._content = this._body.find("div#wrapper > div#content");
+		this._footer = this._body.find("div#wrapper > footer#footer-main");
 		
 		this.win.on("resize", e => this.onWindowResize());
 		this.win.on("scroll", e => this.onWindowScroll());
@@ -43,15 +60,15 @@ export class AppComponent implements AfterViewInit
 		
 		if (docElement.scrollHeight <= docElement.clientHeight)
 		{
-			this.content[0].style.height =
+			this._content[0].style.height =
 			(
-				this.wrapper[0].getIntProp("height") -
+				this._wrapper[0].getIntProp("height") -
 				(
-					this.header[0].getIntProp("height")
+					this._header[0].getIntProp("height")
 					+
-					this.navbar[0].getIntProp("height")
+					this._navbar[0].getIntProp("height")
 					+
-					this.footer[0].getIntProp("height")
+					this._footer[0].getIntProp("height")
 				)
 			) + "px";
 		}
@@ -59,10 +76,21 @@ export class AppComponent implements AfterViewInit
 	
 	onWindowScroll()
 	{
-		if (<number>this.win.scrollTop() > this.header[0].getIntProp("height") + this.navbar[0].getIntProp("height"))
+		if (<number>this.win.scrollTop() > this._header[0].getIntProp("height") + this._navbar[0].getIntProp("height"))
 		{
-			if (!this.fixed.hasClass("on-top")) this.fixed.addClass("on-top");
+			if (!this._fixed.hasClass("on-top")) this._fixed.addClass("on-top");
 		}
-		else if (this.fixed.hasClass("on-top")) this.fixed.removeClass("on-top");
+		else if (this._fixed.hasClass("on-top")) this._fixed.removeClass("on-top");
+	}
+	
+	showRegisterPopup()
+	{
+		alert("register!");
+	}
+	
+	showLoginPopup()
+	{
+		this.popup.feed = this.loginFeed;
+		this.popup.show();
 	}
 }

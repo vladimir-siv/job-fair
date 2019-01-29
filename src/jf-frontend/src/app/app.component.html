@@ -8,10 +8,10 @@
 					</div>
 					<div class="col-xl-8 col-lg-8 col-md-6 col-sm-4 col-2 text-center"></div>
 					<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-8 text-center">
-						<!--button type="button" class="btn btn-xs btn-link btn-link-light" onclick="alert('register popup');"><i class="icon ion-ios-person"></i> Sign Up</button>
-						<button type="button" class="btn btn-xs btn-link btn-link-light" onclick="alert('login popup');"><i class="icon ion-ios-log-in"></i> Login</button-->
-						<button type="button" class="btn btn-md btn-link btn-link-light" href="###/ViewProfile"><i class="icon ion-ios-person"></i> Profile</button>
-						<button type="button" class="btn btn-xs btn-link btn-link-light" href="###/Account/Logout"><i class="icon ion-ios-log-out"></i> Log out</button>
+						<button type="button" class="btn btn-xs btn-link btn-link-light" (click)="showRegisterPopup();"><i class="icon ion-ios-person"></i> Sign Up</button>
+						<button type="button" class="btn btn-xs btn-link btn-link-light" (click)="showLoginPopup();"><i class="icon ion-ios-log-in"></i> Login</button>
+						<!--button type="button" class="btn btn-md btn-link btn-link-light" href="###/ViewProfile"><i class="icon ion-ios-person"></i> Profile</button>
+						<button type="button" class="btn btn-xs btn-link btn-link-light" href="###/Account/Logout"><i class="icon ion-ios-log-out"></i> Log out</button-->
 					</div>
 				</div>
 			</div>
@@ -34,14 +34,14 @@
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
 						</div>
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-							<button type="button" class="btn btn-md btn-link btn-link-light" onclick="alert('register popup');"><i class="icon ion-ios-person"></i> Sign up</button>
+							<button type="button" class="btn btn-md btn-link btn-link-light" (click)="showRegisterPopup();"><i class="icon ion-ios-person"></i> Sign up</button>
 						</div>
 					</div>
 					<div class="row" style="height: 40px; padding-top: 3px;">
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
 						</div>
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-							<button type="button" class="btn btn-md btn-link btn-link-light" onclick="alert('login popup');"><i class="icon ion-ios-log-in"></i> Login</button>
+							<button type="button" class="btn btn-md btn-link btn-link-light" (click)="showLoginPopup();"><i class="icon ion-ios-log-in"></i> Log in</button>
 						</div>
 					</div-->
 					
@@ -156,4 +156,9 @@
 			<div class="row d-md-none" style="height: 10px;"></div>
 		</div>
 	</footer>
+</div>
+
+<div id="dynamics">
+	<popup #popup></popup>
+	<login-popup-feed #login></login-popup-feed>
 </div>
