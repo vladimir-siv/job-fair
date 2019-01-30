@@ -2,3 +2,5 @@
 @import "./assets/styles/stylization.css";
 @import "./assets/styles/navbar.css";
 @import "./assets/styles/cursor.css";
+
+.on-front { z-index: 1000000; }

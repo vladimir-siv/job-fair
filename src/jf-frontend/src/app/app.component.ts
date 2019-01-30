@@ -1,7 +1,11 @@
-import { DependencyInjectionContext } from './DependencyInjection/DependencyInjectionContext';
+import { DependencyInjectionContext } from "./DependencyInjection/DependencyInjectionContext";
 import { Component, AfterViewInit, ViewChild } from "@angular/core";
 import { PopupComponent } from "./popups/popup/popup.component";
-import { LoginPopupFeedComponent } from './popups/login-popup-feed/login-popup-feed.component';
+import { LoginPopupFeedComponent } from "./popups/login-popup-feed/login-popup-feed.component";
+import { AlertComponent } from "./popups/alert/alert.component";
+import { PromptAlertFeedComponent } from "./popups/prompt-alert-feed/prompt-alert-feed.component";
+import { PopupFeed } from "./popups/PopupFeed";
+import { AlertFeed } from "./popups/AlertFeed";
 import * as JQ from "jquery";
 
 @Component
@@ -14,8 +18,11 @@ export class AppComponent implements AfterViewInit
 {
 	public constructor() { DependencyInjectionContext.init(this); }
 	
-	@ViewChild("popup") private popup: PopupComponent
-	@ViewChild("login") private loginFeed: LoginPopupFeedComponent;
+	@ViewChild("popup") private popup: PopupComponent;
+	@ViewChild("login") private login: LoginPopupFeedComponent;
+	
+	@ViewChild("alert") private alert: AlertComponent;
+	@ViewChild("prompt") private prompt: PromptAlertFeedComponent;
 	
 	private win: JQuery<Window> = JQ(window);
 	public get window(): JQuery<Window> { return this.win; }
@@ -83,14 +90,15 @@ export class AppComponent implements AfterViewInit
 		else if (this._fixed.hasClass("on-top")) this._fixed.removeClass("on-top");
 	}
 	
-	showRegisterPopup()
+	public showPopup(feed: PopupFeed)
 	{
-		alert("register!");
+		this.popup.feed = feed;
+		this.popup.show();
 	}
 	
-	showLoginPopup()
+	public showAlert(feed: AlertFeed)
 	{
-		this.popup.feed = this.loginFeed;
-		this.popup.show();
+		this.alert.feed = feed;
+		this.alert.show();
 	}
 }

@@ -5,13 +5,17 @@ import { ModalModule } from "ngx-bootstrap";
 
 import { PopupComponent } from "./popup/popup.component";
 import { LoginPopupFeedComponent } from "./login-popup-feed/login-popup-feed.component";
+import { AlertComponent } from './alert/alert.component';
+import { PromptAlertFeedComponent } from '../popups/prompt-alert-feed/prompt-alert-feed.component';
 
 @NgModule
 ({
 	declarations:
 	[
 		PopupComponent,
-		LoginPopupFeedComponent
+		LoginPopupFeedComponent,
+		AlertComponent,
+		PromptAlertFeedComponent
 	],
 	imports:
 	[
@@ -22,7 +26,9 @@ import { LoginPopupFeedComponent } from "./login-popup-feed/login-popup-feed.com
 	exports:
 	[
 		PopupComponent,
-		LoginPopupFeedComponent
+		LoginPopupFeedComponent,
+		AlertComponent,
+		PromptAlertFeedComponent
 	]
 })
 export class PopupsModule { }
