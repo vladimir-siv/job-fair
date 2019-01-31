@@ -1,0 +1,5 @@
+<div class="text-justify">
+	<input #input type="file" style="display: none;" [accept]="accept" (change)="onFilesSelected($event.target.files)">
+	<button type="button" [class]="class" (click)="attach();"><i class="fa fa-file-zip-o"></i> {{ text }}</button>
+	<p *ngIf="prompt.toLocaleLowerCase() == 'true'" class="d-inline font-times-new-roman font-xs">&emsp;{{ _fileNames.join(" | ") }}</p>
+</div>

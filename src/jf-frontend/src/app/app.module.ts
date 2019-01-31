@@ -2,8 +2,9 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
 import { PopupsModule } from "./popups/popups.module";
+import { InputsModule } from "./inputs/inputs.module";
+import { AjaxModule } from "./ajax/ajax.module";
 
 import { AppComponent } from "./app.component";
 
@@ -18,8 +19,9 @@ import { AppComponent } from "./app.component";
 		BrowserModule,
 		AppRoutingModule,
 		FormsModule,
-		HttpClientModule,
-		PopupsModule
+		PopupsModule,
+		InputsModule,
+		AjaxModule
 	],
 	providers: [],
 	bootstrap: [AppComponent]

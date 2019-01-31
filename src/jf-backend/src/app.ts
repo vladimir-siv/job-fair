@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import fileupload from "express-fileupload";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
@@ -25,6 +26,21 @@ app.use
 		secret: "#Th15 15 4 53cr37 p455w0rd 70 pr073c7 S35510n ID5!",
 		resave: false,
 		saveUninitialized: false
+	})
+);
+
+app.use
+(
+	fileupload
+	({
+		createParentPath: true,
+		limits: { fileSize: 25 * 1024 * 1024 },
+		useTempFiles: true,
+		tempFileDir: "\\..\\..\\..\\tmp\\",
+		safeFileNames: true,
+		preserveExtension: 10,
+		abortOnLimit: true,
+		parseNested: true
 	})
 );
 

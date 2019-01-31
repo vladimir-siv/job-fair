@@ -6,6 +6,7 @@ import { AlertComponent } from "./popups/alert/alert.component";
 import { PromptAlertFeedComponent } from "./popups/prompt-alert-feed/prompt-alert-feed.component";
 import { PopupFeed } from "./popups/PopupFeed";
 import { AlertFeed } from "./popups/AlertFeed";
+import { AccountManagerService } from "./ajax/services/account-manager.service";
 import * as JQ from "jquery";
 
 @Component
@@ -16,7 +17,13 @@ import * as JQ from "jquery";
 })
 export class AppComponent implements AfterViewInit
 {
-	public constructor() { DependencyInjectionContext.init(this); }
+	public constructor
+	(
+		private account: AccountManagerService
+	)
+	{
+		DependencyInjectionContext.init(this);
+	}
 	
 	@ViewChild("popup") private popup: PopupComponent;
 	@ViewChild("login") private login: LoginPopupFeedComponent;

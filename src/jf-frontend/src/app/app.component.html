@@ -78,6 +78,13 @@
 		</div>
 	</nav>
 	<div id="content" class="container">
+		
+		<div class="mx-auto my-3">
+			<input-file #attachment accept="image/*" mode="multiple" btn-class="btn btn-info"></input-file>
+			<br>
+			<button type="button" class="btn btn-success" (click)="account.register(attachment.files)">Submit files</button>
+		</div>
+		
 		<router-outlet></router-outlet>
 	</div>
 	<footer id="footer-main" class="border-boxed w-100">
