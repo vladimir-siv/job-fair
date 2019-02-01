@@ -8,7 +8,7 @@
 		<div class="input-group-prepend">
 			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-mail mx-auto"></i></span>
 		</div>
-		<input id="login-email" type="text" class="form-control" name="login-email" placeholder="E-mail" [(ngModel)]="email">
+		<input id="login-username" type="text" class="form-control" name="login-username" placeholder="Username" [(ngModel)]="username">
 	</div>
 	<div class="input-group">
 		<div class="input-group-prepend">
@@ -33,4 +33,8 @@
 </ng-template>
 
 <ng-template #status>
+	<div *ngFor="let one of prompts" class="alert alert-{{ one.type }} alert-dismissible pb-0 fade show">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<p>{{ one.content }}</p>
+	</div>
 </ng-template>

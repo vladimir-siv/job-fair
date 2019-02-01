@@ -1,6 +1,10 @@
 import express from "express";
 import fileupload from "express-fileupload";
 import path from "path";
+import crypto from "crypto";
+import user from "../models/user";
+import sharedlib from "../shared/library";
+
 let router = express.Router();
 
 router.get("/", (req, res, next) =>
@@ -10,8 +14,6 @@ router.get("/", (req, res, next) =>
 
 router.post("/upload", (req, res, next) =>
 {
-	console.log("SINE OVDE JE VELIKI BAG NEKI");
-	
 	let code: number = 200;
 	let response =
 	{
@@ -36,7 +38,24 @@ router.post("/upload", (req, res, next) =>
 		}
 	}
 	
-	return res.status(code).send(response);
+	return res.status(code).json(response);
+});
+
+router.post("/create-admin", (req, res, next) =>
+{
+	user.findOne({ username: req.body.username }, (err: any, data: Document) =>
+	{
+		if (err) return next(err);
+		if (data) return res.status(200).json({ result: "failure", message: "Username already in use." });
+		
+		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
+		
+		user.create(req.body, (err: any, data: Document[]) =>
+		{
+			if (err) return next(err);
+			res.status(200).json({ result: "success", message: "Successfully created admin." });
+		});
+	});
 });
 
 export default router;

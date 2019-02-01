@@ -10,6 +10,9 @@ import path from "path";
 
 import devRouter from "./routes/dev";
 
+import redirectRouter from "./routes/redirect";
+import accountRouter from "./routes/account";
+
 let angularApp = express.static(path.join(__dirname, "../../jf-frontend/dist/jf-frontend"));
 
 let app = express();
@@ -50,8 +53,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(angularApp);
-
 app.use("/dev", devRouter);
+
+app.use("/", redirectRouter);
+
+app.use("/account", accountRouter);
 
 app.use("/*", angularApp);
 

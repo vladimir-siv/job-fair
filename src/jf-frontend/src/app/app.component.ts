@@ -7,6 +7,7 @@ import { PromptAlertFeedComponent } from "./popups/prompt-alert-feed/prompt-aler
 import { PopupFeed } from "./popups/PopupFeed";
 import { AlertFeed } from "./popups/AlertFeed";
 import { AccountManagerService } from "./ajax/services/account-manager.service";
+import { IAccountInfo } from "./models/account.model";
 import * as JQ from "jquery";
 
 @Component
@@ -23,7 +24,11 @@ export class AppComponent implements AfterViewInit
 	)
 	{
 		DependencyInjectionContext.init(this);
+		this.account.accinfo(response => this._accinfo = response.info);
 	}
+	
+	private _accinfo: IAccountInfo;
+	public get accinfo(): IAccountInfo { return this._accinfo; }
 	
 	@ViewChild("popup") private popup: PopupComponent;
 	@ViewChild("login") private login: LoginPopupFeedComponent;

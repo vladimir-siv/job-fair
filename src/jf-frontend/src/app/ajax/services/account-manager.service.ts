@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { IResponse } from "../ajax.types";
+import { IAccountInfo } from "../../models/account.model";
 
 @Injectable
 ({
@@ -25,5 +26,20 @@ export class AccountManagerService
 			
 			this.http.post<IResponse>("/dev/upload", formData).subscribe(response => console.log(response.message));
 		}
+	}
+	
+	public login(username: string, password: string, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/account/login", { username: username, password: password }).subscribe(callback);
+	}
+	
+	public changepassword(username: string, password: string, newpw: string, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/account/password", { username: username, password: password, newpw: newpw }).subscribe(callback);
+	}
+	
+	public accinfo(callback: ((response: { info: IAccountInfo }) => void))
+	{
+		this.http.get<{ info: IAccountInfo }>("/account/info").subscribe(callback);
 	}
 }

@@ -65,3 +65,6 @@ dist/
 
 # Temporary directories
 tmp/
+
+# Database file storage
+src/jf-backend/storage/

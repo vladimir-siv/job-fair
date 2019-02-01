@@ -1,0 +1,5 @@
+<div class="mx-auto my-3">
+	<input-file #attachment accept="image/*" mode="multiple" btn-class="btn btn-info"></input-file>
+	<br>
+	<button type="button" class="btn btn-success" (click)="account.register(attachment.files)">Submit files</button>
+</div>

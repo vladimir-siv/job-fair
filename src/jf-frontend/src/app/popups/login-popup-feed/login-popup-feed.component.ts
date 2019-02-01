@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { PopupFeed } from "../PopupFeed";
+import { AccountManagerService } from "../../ajax/services/account-manager.service";
 
 @Component
 ({
@@ -9,11 +11,44 @@ import { PopupFeed } from "../PopupFeed";
 })
 export class LoginPopupFeedComponent extends PopupFeed
 {
-	private email: string;
+	public constructor
+	(
+		private router: Router,
+		private account: AccountManagerService
+	)
+	{
+		super();
+	}
+	
+	private username: string;
 	private password: string;
+	
+	private prompts: { type: string, content: string }[];
 	
 	private login()
 	{
-		alert(this.email + " -> " + this.password);
+		this.prompts = [];
+		
+		if (!this.username || this.username.search(/[^a-zA-Z0-9\.\_\-]/) != -1)
+		{
+			this.prompts.push({ type: "danger", content: "Username not valid." });
+		}
+		
+		if (!this.password)
+		{
+			this.prompts.push({ type: "danger", content: "Password not valid." });
+		}
+		
+		if (this.prompts.length > 0) return;
+		
+		this.account.login(this.username, this.password, response =>
+		{
+			this.prompts.push({ type: response.result, content: response.message });
+			
+			if (response.result == "success")
+			{
+				window.location.replace("/home");
+			}
+		});
 	}
 }

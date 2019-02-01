@@ -7,12 +7,18 @@ import { InputsModule } from "./inputs/inputs.module";
 import { AjaxModule } from "./ajax/ajax.module";
 
 import { AppComponent } from "./app.component";
+import { IndexPageComponent } from "./index-page/index-page.component";
+import { HomePageComponent } from "./home-page/home-page.component";
+import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
 @NgModule
 ({
 	declarations:
 	[
-		AppComponent
+		AppComponent,
+		IndexPageComponent,
+		HomePageComponent,
+		PageNotFoundComponent
 	],
 	imports:
 	[
