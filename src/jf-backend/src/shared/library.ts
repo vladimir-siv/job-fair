@@ -1,7 +1,18 @@
 let specialchars = ['#', '*', '.', '!', '?', '#'];
+let imageTypes = [".png", ".jpg"]
 
 export default
 {
+	validateImgType(filename: string): boolean
+	{
+		for (let i = 0; i < imageTypes.length; ++i)
+		{
+			if (filename.endsWith(imageTypes[i])) return true;
+		}
+		
+		return false;
+	},
+	
 	contains(haystack: any[], needle: any): boolean
 	{
 		for (let i = 0; i < haystack.length; ++i)
@@ -61,7 +72,7 @@ export default
 		
 		if (password != pwconfirm) return "Password and password confirmation do not match.";
 		if (capitals < 1) return "Password has to have at least 1 uppercase letter.";
-		if (noncapitals < 3) return "Password has to have at least 3 uppercase letters.";
+		if (noncapitals < 3) return "Password has to have at least 3 lowercase letters.";
 		if (digits < 1) return "Password has to have at least 1 digit.";
 		if (specials < 1) return "Password has to have at least one special character [" + specialchars.join(", ") + "]";
 		if (!first) return "First character of the password has to be a letter (lowercase or uppercase).";

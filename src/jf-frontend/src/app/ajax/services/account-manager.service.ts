@@ -16,16 +16,9 @@ export class AccountManagerService
 		private http: HttpClient
 	) { }
 	
-	public register(files: FileList): void
+	public register(usertype: string, form: FormData, callback: ((response: IResponse) => void)): void
 	{
-		if (files && files.length > 0)
-		{
-			let formData: FormData = new FormData();
-			for (let i = 0; i < files.length; ++i)
-				formData.append("files[" + i + "]", files[i], files[i].name);
-			
-			this.http.post<IResponse>("/dev/upload", formData).subscribe(response => console.log(response.message));
-		}
+		this.http.post<IResponse>("/account/register-" + usertype, form).subscribe(callback);
 	}
 	
 	public login(username: string, password: string, callback: ((response: IResponse) => void))

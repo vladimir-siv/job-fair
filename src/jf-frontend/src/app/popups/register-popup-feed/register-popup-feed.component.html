@@ -1,0 +1,156 @@
+<ng-template #header let-popup="popup">
+	<h4 class="modal-title"><i class="icon ion-ios-person"></i>&emsp;Sign up</h4>
+	<button type="button" class="close" (click)="popup.hide()">&times;</button>
+</ng-template>
+
+<ng-template #body>
+	<ul class="nav nav-tabs">
+		<li class="nav-item nav-link"><a class="hover-text-decor-none" data-toggle="tab" href="#register-student" (click)="active = 'student'">Student</a></li>
+		<li class="nav-item nav-link"><a class="hover-text-decor-none" data-toggle="tab" href="#register-company" (click)="active = 'company'">Company</a></li>
+	</ul>
+	
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-pricetag mx-auto"></i></span>
+		</div>
+		<input id="register-username" type="text" class="form-control" name="register-username" placeholder="Username" [(ngModel)]="username">
+	</div>
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-medical mx-auto"></i></span>
+		</div>
+		<input id="register-password" type="password" class="form-control" name="register-password" placeholder="Password" [(ngModel)]="password">
+	</div>
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-medical mx-auto"></i></span>
+		</div>
+		<input id="register-pwconfirm" type="password" class="form-control" name="register-pwconfirm" placeholder="Confirm Password" [(ngModel)]="pwconfirm">
+	</div>
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-mail mx-auto"></i></span>
+		</div>
+		<input id="register-email" type="email" class="form-control" name="register-email" placeholder="E-Mail" [(ngModel)]="email">
+	</div>
+	
+	<div class="tab-content">
+		<div id="register-student" class="tab-pane fade in show active">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-quote mx-auto"></i></span>
+				</div>
+				<input id="register-firstname" type="text" class="form-control" name="register-firstname" placeholder="First name" [(ngModel)]="firstname">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-quote mx-auto"></i></span>
+				</div>
+				<input id="register-lastname" type="text" class="form-control" name="register-lastname" placeholder="Last name" [(ngModel)]="lastname">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-phone-portrait mx-auto"></i></span>
+				</div>
+				<input id="register-phone" type="text" class="form-control" name="register-phone" placeholder="Phone" [(ngModel)]="phone">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-reorder mx-auto"></i></span>
+				</div>
+				<input id="register-year" type="number" min="0" class="form-control" name="register-year" placeholder="Year of Study" [(ngModel)]="year">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-school mx-auto"></i></span>
+				</div>
+				<input type="text" class="form-control" placeholder="Graduated" disabled>
+				<input id="register-graduated" type="checkbox" class="form-control" name="register-graduated" [(ngModel)]="graduated">
+			</div>
+		</div>
+		<div id="register-company" class="tab-pane fade">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-quote mx-auto"></i></span>
+				</div>
+				<input id="register-name" type="text" class="form-control" name="register-name" placeholder="Company Name" [(ngModel)]="name">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-pin mx-auto"></i></span>
+				</div>
+				<input id="register-address" type="text" class="form-control" name="register-address" placeholder="Address" [(ngModel)]="address">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-man mx-auto"></i></span>
+				</div>
+				<input id="register-director" type="text" class="form-control" name="register-director" placeholder="Director" [(ngModel)]="director">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-at mx-auto"></i></span>
+				</div>
+				<input id="register-cin" type="text" class="form-control" name="register-cin" placeholder="Corporate Identification Number" [(ngModel)]="cin">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-contacts mx-auto"></i></span>
+				</div>
+				<input id="register-employees" type="number" class="form-control" name="register-employees" placeholder="Number of employees" [(ngModel)]="employees">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-link mx-auto"></i></span>
+				</div>
+				<input id="register-web" type="url" class="form-control" name="register-web" placeholder="Website URL" [(ngModel)]="web">
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-business mx-auto"></i></span>
+				</div>
+				<select id="register-sector" class="form-control" name="register-sector" [(ngModel)]="sector">
+					<option value="IT">IT</option>
+					<option value="Telecommunication">Telecommunication</option>
+					<option value="Energetics">Energetics</option>
+					<option value="Construction & Architecture">Construction & Architecture</option>
+					<option value="Mechanics">Mechanics</option>
+				</select>
+			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-locate mx-auto"></i></span>
+				</div>
+				<textarea id="register-speciality" class="form-control" style="resize: none;" rows="4" name="register-speciality" placeholder="Speciality" [(ngModel)]="speciality"></textarea>
+			</div>
+		</div>
+	</div>
+	
+	<div class="input-group">
+		<div class="input-group-prepend">
+			<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-image mx-auto"></i></span>
+		</div>
+		<input-file #attachment accept="image/*" mode="single" class="form-control" style="padding-top: 1px; padding-left: 3px;" btn-class="btn btn-info p-1" text="Attach profile image"></input-file>
+	</div>
+</ng-template>
+
+<ng-template #footer let-popup="popup">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-4">
+				<button type="button" class="btn btn-primary btn-sm btn-block" (click)="register()">Sign up</button>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-4"></div>
+			<div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-4">
+				<button type="button" class="btn btn-danger btn-sm btn-block" (click)="popup.hide()">Close</button>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #status>
+	<div *ngFor="let one of prompts" class="alert alert-{{ one.type }} alert-dismissible pb-0 fade show">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<p>{{ one.content }}</p>
+	</div>
+</ng-template>

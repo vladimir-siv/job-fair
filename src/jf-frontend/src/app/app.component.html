@@ -13,7 +13,7 @@
 							<a class="btn btn-xs btn-link btn-link-light" href="/account/logout"><i class="icon ion-ios-log-out"></i> Log out</a>
 						</ng-container>
 						<ng-template #__else_1>
-							<button type="button" class="btn btn-xs btn-link btn-link-light" href="#" (click)="showAlert(prompt.create('danger', 'Registration is not implemented yet!', 'Error'));"><i class="icon ion-ios-person"></i> Sign Up</button>
+							<button type="button" class="btn btn-xs btn-link btn-link-light" href="#" (click)="showPopup(register);"><i class="icon ion-ios-person"></i> Sign Up</button>
 							<button type="button" class="btn btn-xs btn-link btn-link-light" href="#" (click)="showPopup(login);"><i class="icon ion-ios-log-in"></i> Login</button>
 						</ng-template>
 					</div>
@@ -54,7 +54,7 @@
 							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
 							</div>
 							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-xs-6 text-center">
-								<button type="button" class="btn btn-md btn-link btn-link-light" (click)="showAlert(prompt.create('danger', 'Registration is not implemented yet!', 'Error'));"><i class="icon ion-ios-person"></i> Sign up</button>
+								<button type="button" class="btn btn-md btn-link btn-link-light" (click)="showPopup(register);"><i class="icon ion-ios-person"></i> Sign up</button>
 							</div>
 						</div>
 						<div class="row" style="height: 40px; padding-top: 3px;">
@@ -166,6 +166,7 @@
 <div id="dynamics">
 	<popup #popup></popup>
 	<login-popup-feed #login></login-popup-feed>
+	<register-popup-feed #register></register-popup-feed>
 	
 	<alert #alert></alert>
 	<prompt-alert-feed #prompt></prompt-alert-feed>

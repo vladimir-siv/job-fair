@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { Router } from "@angular/router";
 import { PopupFeed } from "../PopupFeed";
 import { AccountManagerService } from "../../ajax/services/account-manager.service";
 
@@ -13,7 +12,6 @@ export class LoginPopupFeedComponent extends PopupFeed
 {
 	public constructor
 	(
-		private router: Router,
 		private account: AccountManagerService
 	)
 	{

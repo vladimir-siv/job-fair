@@ -3,6 +3,7 @@ import fileupload from "express-fileupload";
 import path from "path";
 import crypto from "crypto";
 import imgsize from "image-size";
+import rimraf from "rimraf";
 import user from "../models/user";
 import sharedlib from "../shared/library";
 
@@ -14,12 +15,10 @@ router.post("/register-student", (req, res, next) =>
 	if (req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
 	
 	let bodyKeys = Object.keys(req.body);
-	let personKeys = Object.keys(req.body.person);
-	let studentKeys = Object.keys(req.body.person.student);
 	
 	if
 	(
-		bodyKeys.length != 4
+		bodyKeys.length != 9
 		||
 		!sharedlib.contains(bodyKeys, "username")
 		||
@@ -27,25 +26,17 @@ router.post("/register-student", (req, res, next) =>
 		||
 		!sharedlib.contains(bodyKeys, "pwconfirm")
 		||
-		!sharedlib.contains(bodyKeys, "person")
+		!sharedlib.contains(bodyKeys, "firstname")
 		||
-		personKeys.length != 5
+		!sharedlib.contains(bodyKeys, "lastname")
 		||
-		!sharedlib.contains(personKeys, "firstname")
+		!sharedlib.contains(bodyKeys, "phone")
 		||
-		!sharedlib.contains(personKeys, "lastname")
+		!sharedlib.contains(bodyKeys, "email")
 		||
-		!sharedlib.contains(personKeys, "phone")
+		!sharedlib.contains(bodyKeys, "year")
 		||
-		!sharedlib.contains(personKeys, "email")
-		||
-		!sharedlib.contains(personKeys, "student")
-		||
-		studentKeys.length != 2
-		||
-		!sharedlib.contains(studentKeys, "year")
-		||
-		!sharedlib.contains(studentKeys, "graduated")
+		!sharedlib.contains(bodyKeys, "graduated")
 		||
 		!req.files
 	)
@@ -60,7 +51,7 @@ router.post("/register-student", (req, res, next) =>
 		return res.status(200).json({ result: "danger", message: usernameCheck });
 	}
 	
-	let passwordCheck = sharedlib.checkpassword(req.body.password, req.body.pwconfig);
+	let passwordCheck = sharedlib.checkpassword(req.body.password, req.body.pwconfirm);
 	
 	if (passwordCheck != "")
 	{
@@ -69,21 +60,14 @@ router.post("/register-student", (req, res, next) =>
 	
 	let uploads = <{ files: fileupload.UploadedFile[] }>req.files;
 	
-	if (uploads.files.length != 0 || !uploads.files[0].mimetype.startsWith("image/"))
+	if (uploads.files.length != 1 || !uploads.files[0].mimetype.startsWith("image/"))
 	{
 		return res.status(200).json({ result: "danger", message: "Only one image is allowed as a profile picture." });
 	}
 	
-	let dimensions = imgsize(uploads.files[0].data);
-	
-	if
-	(
-		dimensions.width < 100 || 300 < dimensions.width
-		||
-		dimensions.height < 100 || 300 < dimensions.height
-	)
+	if (!sharedlib.validateImgType(uploads.files[0].name))
 	{
-		return res.status(200).json({ result: "danger", message: "Profile picture must be of size between 100x100px & 300x300px." });
+		return res.status(200).json({ result: "danger", message: "Invalid image type." });
 	}
 	
 	user.findOne({ username: req.body.username }, (err: any, data: Document) =>
@@ -96,19 +80,59 @@ router.post("/register-student", (req, res, next) =>
 		
 		if (data) return res.status(200).json({ result: "danger", message: "Username already in use." });
 		
+		req.body.person =
+		{
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			phone: req.body.phone,
+			email: req.body.email,
+			student:
+			{
+				year: req.body.year,
+				graduated: req.body.graduated
+			}
+		}
+		
+		delete req.body.firstname;
+		delete req.body.lastname;
+		delete req.body.phone;
+		delete req.body.email;
+		delete req.body.year;
+		delete req.body.graduated;
+		
 		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
 		delete req.body.pwconfirm;
 		
-		user.create(req.body, (err: any, data: Document[]) =>
+		let filepath = path.join(__dirname, "../../storage/users/", req.body.username);
+		let file = path.join(filepath, "profile" + uploads.files[0].name.substring(uploads.files[0].name.lastIndexOf('.')));
+		
+		uploads.files[0].mv(file, err =>
 		{
-			if (err)
+			if (err) return res.status(200).json({ result: "danger", message: "Could not upload profile picture." });
+			
+			let dimensions = imgsize(file);
+			
+			if
+			(
+				dimensions.width < 100 || 300 < dimensions.width
+				||
+				dimensions.height < 100 || 300 < dimensions.height
+			)
 			{
-				console.log("Error creating username: \"" + req.body.username + "\"");
-				return next(err);
+				rimraf.sync(filepath);
+				return res.status(200).json({ result: "danger", message: "Profile picture must be of size between 100x100px & 300x300px." });
 			}
 			
-			uploads.files[0].mv(path.join(__dirname, "../../storage/users/", req.body.username, "profile.png"));
-			res.status(200).json({ result: "success", message: "Registration complete." });
+			user.create(req.body, (err: any, data: Document[]) =>
+			{
+				if (err)
+				{
+					console.log("Error creating username: \"" + req.body.username + "\"");
+					return next(err);
+				}
+				
+				res.status(200).json({ result: "success", message: "Registration complete." });
+			});
 		});
 	});
 });
@@ -119,11 +143,10 @@ router.post("/register-company", (req, res, next) =>
 	if (req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
 	
 	let bodyKeys = Object.keys(req.body);
-	let company = Object.keys(req.body.company);
 	
 	if
 	(
-		bodyKeys.length != 4
+		bodyKeys.length != 12
 		||
 		!sharedlib.contains(bodyKeys, "username")
 		||
@@ -131,27 +154,23 @@ router.post("/register-company", (req, res, next) =>
 		||
 		!sharedlib.contains(bodyKeys, "pwconfirm")
 		||
-		!sharedlib.contains(bodyKeys, "company")
+		!sharedlib.contains(bodyKeys, "name")
 		||
-		company.length != 9
+		!sharedlib.contains(bodyKeys, "address")
 		||
-		!sharedlib.contains(company, "name")
+		!sharedlib.contains(bodyKeys, "director")
 		||
-		!sharedlib.contains(company, "address")
+		!sharedlib.contains(bodyKeys, "cin")
 		||
-		!sharedlib.contains(company, "director")
+		!sharedlib.contains(bodyKeys, "employees")
 		||
-		!sharedlib.contains(company, "cin")
+		!sharedlib.contains(bodyKeys, "email")
 		||
-		!sharedlib.contains(company, "employees")
+		!sharedlib.contains(bodyKeys, "web")
 		||
-		!sharedlib.contains(company, "email")
+		!sharedlib.contains(bodyKeys, "sector")
 		||
-		!sharedlib.contains(company, "web")
-		||
-		!sharedlib.contains(company, "sector")
-		||
-		!sharedlib.contains(company, "speciality")
+		!sharedlib.contains(bodyKeys, "speciality")
 		||
 		!req.files
 	)
@@ -166,7 +185,7 @@ router.post("/register-company", (req, res, next) =>
 		return res.status(200).json({ result: "danger", message: usernameCheck });
 	}
 	
-	let passwordCheck = sharedlib.checkpassword(req.body.password, req.body.pwconfig);
+	let passwordCheck = sharedlib.checkpassword(req.body.password, req.body.pwconfirm);
 	
 	if (passwordCheck != "")
 	{
@@ -175,21 +194,14 @@ router.post("/register-company", (req, res, next) =>
 	
 	let uploads = <{ files: fileupload.UploadedFile[] }>req.files;
 	
-	if (uploads.files.length != 0 || !uploads.files[0].mimetype.startsWith("image/"))
+	if (uploads.files.length != 1 || !uploads.files[0].mimetype.startsWith("image/"))
 	{
 		return res.status(200).json({ result: "danger", message: "Only one image is allowed as a profile picture." });
 	}
 	
-	let dimensions = imgsize(uploads.files[0].data);
-	
-	if
-	(
-		dimensions.width < 100 || 300 < dimensions.width
-		||
-		dimensions.height < 100 || 300 < dimensions.height
-	)
+	if (!sharedlib.validateImgType(uploads.files[0].name))
 	{
-		return res.status(200).json({ result: "danger", message: "Profile picture must be of size between 100x100px & 300x300px." });
+		return res.status(200).json({ result: "danger", message: "Invalid image type." });
 	}
 	
 	user.findOne({ username: req.body.username }, (err: any, data: Document) =>
@@ -202,19 +214,62 @@ router.post("/register-company", (req, res, next) =>
 		
 		if (data) return res.status(200).json({ result: "danger", message: "Username already in use." });
 		
+		req.body.company =
+		{
+			name: req.body.name,
+			address: req.body.address,
+			director: req.body.director,
+			cin: req.body.cin,
+			employees: req.body.employees,
+			email: req.body.email,
+			web: req.body.web,
+			sector: req.body.sector,
+			speciality: req.body.speciality
+		};
+		
+		delete req.body.name;
+		delete req.body.address;
+		delete req.body.director;
+		delete req.body.cin;
+		delete req.body.employees;
+		delete req.body.email;
+		delete req.body.web;
+		delete req.body.sector;
+		delete req.body.speciality;
+		
 		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
 		delete req.body.pwconfirm;
 		
-		user.create(req.body, (err: any, data: Document[]) =>
+		let filepath = path.join(__dirname, "../../storage/users/", req.body.username);
+		let file = path.join(filepath, "profile" + uploads.files[0].name.substring(uploads.files[0].name.lastIndexOf('.')));
+		
+		uploads.files[0].mv(file, err =>
 		{
-			if (err)
+			if (err) return res.status(200).json({ result: "danger", message: "Could not upload profile picture." });
+			
+			let dimensions = imgsize(file);
+			
+			if
+			(
+				dimensions.width < 100 || 300 < dimensions.width
+				||
+				dimensions.height < 100 || 300 < dimensions.height
+			)
 			{
-				console.log("Error creating username: \"" + req.body.username + "\"");
-				return next(err);
+				rimraf.sync(filepath);
+				return res.status(200).json({ result: "danger", message: "Profile picture must be of size between 100x100px & 300x300px." });
 			}
 			
-			uploads.files[0].mv(path.join(__dirname, "../../storage/users/", req.body.username, "profile.png"));
-			res.status(200).json({ result: "success", message: "Registration complete." });
+			user.create(req.body, (err: any, data: Document[]) =>
+			{
+				if (err)
+				{
+					console.log("Error creating username: \"" + req.body.username + "\"");
+					return next(err);
+				}
+				
+				res.status(200).json({ result: "success", message: "Registration complete." });
+			});
 		});
 	});
 });

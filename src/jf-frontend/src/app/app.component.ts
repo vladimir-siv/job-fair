@@ -31,10 +31,7 @@ export class AppComponent implements AfterViewInit
 	public get accinfo(): IAccountInfo { return this._accinfo; }
 	
 	@ViewChild("popup") private popup: PopupComponent;
-	@ViewChild("login") private login: LoginPopupFeedComponent;
-	
 	@ViewChild("alert") private alert: AlertComponent;
-	@ViewChild("prompt") private prompt: PromptAlertFeedComponent;
 	
 	private win: JQuery<Window> = JQ(window);
 	public get window(): JQuery<Window> { return this.win; }
@@ -79,7 +76,8 @@ export class AppComponent implements AfterViewInit
 		
 		if (docElement.scrollHeight <= docElement.clientHeight)
 		{
-			this._content[0].style.height =
+			//this._content[0].style.height =
+			this._content[0].style.minHeight =
 			(
 				this._wrapper[0].getIntProp("height") -
 				(
