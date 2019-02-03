@@ -1,2 +1,2 @@
 # job-fair
-Collage Website Project
+College Website Project

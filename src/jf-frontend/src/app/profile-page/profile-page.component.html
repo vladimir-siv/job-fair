@@ -1,0 +1,82 @@
+<div class="container-fluid mt-4">
+	<table class="table table-striped table-dark">
+		<thead>
+			<tr>
+				<th scope="col">Field</th>
+				<th scope="col">Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">Username:</th>
+				<td>{{ data?.username }}</td>
+			</tr>
+			<ng-container *ngIf="data && data.person">
+				<tr>
+					<th scope="row">First name:</th>
+					<td>{{ data.person.firstname }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Last name:</th>
+					<td>{{ data.person.lastname }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Phone:</th>
+					<td>{{ data.person.phone }}</td>
+				</tr>
+				<tr>
+					<th scope="row">E-Mail:</th>
+					<td>{{ data.person.email }}</td>
+				</tr>
+				<ng-container *ngIf="data.person.student">
+					<tr>
+						<th scope="row">Year of Study:</th>
+						<td>{{ data.person.student.year }}</td>
+					</tr>
+					<tr>
+						<th scope="row">Graduated:</th>
+						<td>{{ data.person.student.graduated }}</td>
+					</tr>
+				</ng-container>
+			</ng-container>
+			<ng-container *ngIf="data && data.company">
+				<tr>
+					<th scope="row">Name:</th>
+					<td>{{ data.company.name }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Address:</th>
+					<td>{{ data.company.address }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Director:</th>
+					<td>{{ data.company.director }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Corporate Identification Number:</th>
+					<td>{{ data.company.cin }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Number of employees:</th>
+					<td>{{ data.company.employees }}</td>
+				</tr>
+				<tr>
+					<th scope="row">E-Mail:</th>
+					<td>{{ data.company.email }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Web:</th>
+					<td><a href="{{ data.company.web }}">{{ data.company.web }}</a></td>
+				</tr>
+				<tr>
+					<th scope="row">Sector:</th>
+					<td>{{ data.company.sector }}</td>
+				</tr>
+				<tr>
+					<th scope="row">Speciality:</th>
+					<td>{{ data.company.speciality }}</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</table>
+</div>

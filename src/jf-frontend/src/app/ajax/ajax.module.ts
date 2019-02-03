@@ -3,12 +3,12 @@ import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 
 import { AccountManagerService } from "./services/account-manager.service";
+import { DatabaseManagerService } from "./services/database-manager.service";
 
 @NgModule
 ({
 	declarations:
 	[
-		
 	],
 	imports:
 	[
@@ -17,7 +17,8 @@ import { AccountManagerService } from "./services/account-manager.service";
 	],
 	providers:
 	[
-		AccountManagerService
+		AccountManagerService,
+		DatabaseManagerService
 	]
 })
 export class AjaxModule { }

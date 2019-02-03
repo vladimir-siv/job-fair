@@ -9,7 +9,7 @@ import logger from "morgan";
 import path from "path";
 
 import devRouter from "./routes/dev";
-
+import dbRouter from "./routes/db";
 import redirectRouter from "./routes/redirect";
 import accountRouter from "./routes/account";
 
@@ -53,7 +53,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(angularApp);
+
 app.use("/dev", devRouter);
+app.use("/db", dbRouter);
 
 app.use("/", redirectRouter);
 

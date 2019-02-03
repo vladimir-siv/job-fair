@@ -20,5 +20,6 @@ function redirectToHome(req: express.Request, res: express.Response, next: NextF
 
 router.get("/index", redirectToHome);
 router.get("/home", redirectToIndex);
+router.get("/profile", redirectToIndex);
 
 export default router;
