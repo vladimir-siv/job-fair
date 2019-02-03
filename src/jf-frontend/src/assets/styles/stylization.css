@@ -286,3 +286,9 @@
 .btn-link-light:active {color: #c6cece;}
 .btn-link-light:link {color: #c2cccc;}
 .btn-link-light:visited {color: #c2cccc;}
+
+.btn-link-gray {color: #727777;}
+.btn-link-gray:hover {color: #919898;}
+.btn-link-gray:active {color: #767979;}
+.btn-link-gray:link {color: #727777;}
+.btn-link-gray:visited {color: #727777;}

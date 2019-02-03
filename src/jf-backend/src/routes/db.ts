@@ -29,4 +29,23 @@ router.get("/users/:username", (req, res, next) =>
 	});
 });
 
+router.post("/companies", (req, res, next) =>
+{
+	if (!req.body.name) req.body.name = "";
+	if (!req.body.address) req.body.address = "";
+	if (!req.body.sectors) return res.status(200).json({ results: [] });
+	
+	user.find({ "company.name": new RegExp(req.body.name, "i"), "company.address": new RegExp(req.body.address, "i"), "company.sector": { $in: req.body.sectors } }, { "username": 1, "company.name": 1 }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Error in executing the query.");
+			return next(err);
+		}
+		
+		// @ts-ignore
+		res.status(200).json({ results: data.map(doc => ({ username: doc.username, name: doc.company.name })) });
+	});
+});
+
 export default router;

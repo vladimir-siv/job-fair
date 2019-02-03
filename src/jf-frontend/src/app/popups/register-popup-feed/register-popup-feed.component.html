@@ -64,8 +64,8 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-school mx-auto"></i></span>
 				</div>
-				<input type="text" class="form-control" placeholder="Graduated" disabled>
-				<input id="register-graduated" type="checkbox" class="form-control" name="register-graduated" [(ngModel)]="graduated">
+				<input type="text" class="form-control w-75" placeholder="Graduated" disabled>
+				<input id="register-graduated" type="checkbox" class="form-control" style="width: 25px" name="register-graduated" [(ngModel)]="graduated">
 			</div>
 		</div>
 		<div id="register-company" class="tab-pane fade">
@@ -110,11 +110,7 @@
 					<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-business mx-auto"></i></span>
 				</div>
 				<select id="register-sector" class="form-control" name="register-sector" [(ngModel)]="sector">
-					<option value="IT">IT</option>
-					<option value="Telecommunication">Telecommunication</option>
-					<option value="Energetics">Energetics</option>
-					<option value="Construction & Architecture">Construction & Architecture</option>
-					<option value="Mechanics">Mechanics</option>
+					<option *ngFor="let one of context.sectors" [ngValue]="one">{{ one }}</option>
 				</select>
 			</div>
 			<div class="input-group">

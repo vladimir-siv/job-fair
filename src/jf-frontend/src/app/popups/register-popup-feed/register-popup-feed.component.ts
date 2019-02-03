@@ -1,5 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { PopupFeed } from "../PopupFeed";
+import { InjectionContext } from "src/app/DependencyInjection/injection-context.service";
 import { InputFileComponent } from "../../inputs/input-file/input-file.component";
 import { AccountManagerService } from "../../ajax/services/account-manager.service";
 
@@ -13,6 +14,7 @@ export class RegisterPopupFeedComponent extends PopupFeed
 {
 	public constructor
 	(
+		private context: InjectionContext,
 		private account: AccountManagerService
 	)
 	{
