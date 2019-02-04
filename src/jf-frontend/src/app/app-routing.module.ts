@@ -4,6 +4,7 @@ import { IndexPageComponent } from "./index-page/index-page.component";
 import { HomePageComponent } from "./home-page/home-page.component";
 import { CompaniesPageComponent } from "./companies-page/companies-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
+import { CVEditPageComponent } from "./cvedit-page/cvedit-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
@@ -15,6 +16,7 @@ const routes: Routes =
 	{ path: "companies", component: CompaniesPageComponent },
 	{ path: "profile", component: ProfilePageComponent },
 	{ path: "profile/:username", component: ProfilePageComponent },
+	{ path: "cvedit", component: CVEditPageComponent },
 	{ path: "admin", component: AdminPageComponent },
 	{ path: "**", component: PageNotFoundComponent }
 ];

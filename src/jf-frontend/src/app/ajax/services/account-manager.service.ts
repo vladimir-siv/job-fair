@@ -35,4 +35,9 @@ export class AccountManagerService
 	{
 		this.http.get<{ info: IAccountInfo }>("/account/info").subscribe(callback);
 	}
+	
+	public updatecv(cv: any, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/account/updatecv", { cv: cv }).subscribe(callback);
+	}
 }

@@ -10,8 +10,9 @@ import { AppComponent } from "./app.component";
 import { IndexPageComponent } from "./index-page/index-page.component";
 import { HomePageComponent } from "./home-page/home-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { ProfilePageComponent } from './profile-page/profile-page.component';
-import { CompaniesPageComponent } from './companies-page/companies-page.component';
+import { ProfilePageComponent } from "./profile-page/profile-page.component";
+import { CompaniesPageComponent } from "./companies-page/companies-page.component";
+import { CVEditPageComponent } from "./cvedit-page/cvedit-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 
 import { InjectionContext } from "./DependencyInjection/injection-context.service";
@@ -26,6 +27,7 @@ import { InjectionContext } from "./DependencyInjection/injection-context.servic
 		ProfilePageComponent,
 		CompaniesPageComponent,
 		AdminPageComponent,
+		CVEditPageComponent,
 		PageNotFoundComponent
 	],
 	imports:

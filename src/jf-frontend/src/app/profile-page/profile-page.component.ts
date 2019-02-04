@@ -33,7 +33,7 @@ export class ProfilePageComponent implements OnInit
 			}
 			else
 			{
-				this.context.app.accinfo.subscribe(value => this.data = value);
+				this.context.app.accinfo.fetch(value => this.data = value);
 			}
 		});
 	}

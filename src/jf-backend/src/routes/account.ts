@@ -5,6 +5,7 @@ import crypto from "crypto";
 import imgsize from "image-size";
 import rimraf from "rimraf";
 import user from "../models/user";
+import environment from "../models/environment";
 import sharedlib from "../shared/library";
 
 let router = express.Router();
@@ -370,6 +371,68 @@ router.get("/info", (req, res, next) =>
 {
 	// @ts-ignore
 	res.status(200).json({ info: req.session.user });
+});
+
+router.post("/updatecv", (req, res, next) =>
+{
+	// @ts-ignore
+	if (!req.session.user || !req.session.user.person || !req.session.user.person.student)
+	{
+		return res.status(200).json({ result: "danger", message: "Could not update CV." });
+	}
+	
+	if (!req.body.cv)
+	{
+		return res.status(200).json({ result: "danger", message: "CV data not supplied." });
+	}
+	
+	environment.findOne({ active: true }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not fetch active environment");
+			return next(err);
+		}
+		
+		// @ts-ignore
+		if (!data.cv)
+		{
+			return res.status(200).json({ result: "danger", message: "CV editing is currently not possible. Please, check again later." });
+		}
+		
+		// @ts-ignore
+		user.findOne({ username: req.session.user.username }, (err, accinfo) =>
+		{
+			if (err)
+			{
+				console.log("Could not fetch user");
+				return next(err);
+			}
+			
+			if (!accinfo)
+			{
+				// should never happen
+				return res.status(200).json({ result: "danger", message: "CV was not successfully updated." });
+			}
+			
+			// @ts-ignore
+			accinfo.person.student.cv = req.body.cv;
+			
+			// @ts-ignore
+			user.updateOne({ username: req.session.user.username }, accinfo, (err, raw) =>
+			{
+				if (err)
+				{
+					console.log("Could not update cv");
+					return next(err);
+				}
+				
+				// @ts-ignore
+				req.session.user.person.student.cv = req.body.cv;
+				res.status(200).json({ result: "success", message: "Successfully updated CV." });
+			});
+		});
+	});
 });
 
 export default router;

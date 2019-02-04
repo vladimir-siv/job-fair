@@ -15,7 +15,7 @@ router.post("/create-env", (req, res, next) =>
 		!req.body.cv
 	)
 	{
-		return res.status(200).json({ result: "failure", message: "Invalid environment format." });
+		return res.status(200).json({ result: "danger", message: "Invalid environment format." });
 	}
 	
 	let create = () =>
@@ -67,7 +67,7 @@ router.post("/update-cv", (req, res, next) =>
 {
 	if (!sharedlib.contains(Object.keys(req.body), "cv"))
 	{
-		return res.status(200).json({ result: "failure", message: "Please, specify the CV field." });
+		return res.status(200).json({ result: "danger", message: "Please, specify the CV field." });
 	}
 	
 	environment.findOne({ active: true }, (err, data) =>
@@ -93,7 +93,7 @@ router.post("/update-cv", (req, res, next) =>
 				res.status(200).json({ result: "success", message: "CV editing is now " + (req.body.cv ? "enabled" : "disabled") + "." });
 			});
 		}
-		else res.status(200).json({ result: "failure", message: "Could not find active environment." });
+		else res.status(200).json({ result: "danger", message: "Could not find active environment." });
 	});
 });
 

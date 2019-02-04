@@ -21,8 +21,8 @@
 				<button type="button" class="btn btn-link-gray form-control dropdown-toggle text-left" data-toggle="dropdown">Sectors</button>
 				<div class="dropdown-menu p-2 w-100">
 					<div *ngFor="let one of context.sectors" class="dropdown-item input-group m-0 p-0">
-						<input type="text" class="form-control" style="width: 90%;" [placeholder]="one" disabled>
-						<input type="checkbox" class="form-control" style="width: 10%;" [(ngModel)]="sectors[one]">
+						<input type="text" class="form-control" style="width: calc(100% - 40px);" [placeholder]="one" disabled>
+						<input type="checkbox" class="form-control" style="width: 40px;" [(ngModel)]="sectors[one]">
 					</div>
 				</div>
 			</div>

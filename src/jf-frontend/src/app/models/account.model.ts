@@ -11,7 +11,8 @@ export interface IAccountInfo
 		student:
 		{
 			year: number,
-			graduated: boolean
+			graduated: boolean,
+			cv: any
 		}
 	},
 	company:

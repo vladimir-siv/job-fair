@@ -1,0 +1,328 @@
+<div class="container-fluid mt-5">
+	<h2 class="px-auto w-100">CV Edit</h2>
+	<div class="mx-auto w-50">
+		
+		<div class="card">
+			<h5 class="card-header">Personal info</h5>
+			<div class="card-body">
+				<input type="text" class="form-control" placeholder="First name(s)" [(ngModel)]="cv.firstnames">
+				<input type="text" class="form-control" placeholder="Surename(s)" [(ngModel)]="cv.surnames">
+				<input type="text" class="form-control" placeholder="Street address" [(ngModel)]="cv.streetaddress">
+				<input type="text" class="form-control" placeholder="Postal code" [(ngModel)]="cv.postalcode">
+				<input type="text" class="form-control" placeholder="City" [(ngModel)]="cv.city">
+				<input type="text" class="form-control" placeholder="Country" [(ngModel)]="cv.country">
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Contact</h5>
+			<div class="card-body">
+				<div class="my-2">
+					<div *ngFor="let one of cv.telephones" class="input-group">
+						<select class="form-control w-25" [(ngModel)]="one.type">
+							<option value="Mobile" selected>Mobile</option>
+							<option value="Home">Home</option>
+							<option value="Work">Work</option>
+						</select>
+						<input type="text" class="form-control w-75" placeholder="Phone number" [(ngModel)]="one.number">
+					</div>
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.telephones.push({ type: '', number: '' })">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.telephones.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+				
+				<input type="email" class="form-control" placeholder="E-Mail" [(ngModel)]="cv.email">
+				
+				<div class="my-2">
+					<input *ngFor="let one of cv.links; index as i; trackBy: track" type="text" class="form-control" placeholder="Link" [(ngModel)]="cv.links[i]">
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.links.push('')">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.links.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+				
+				<div class="my-2">
+					<div *ngFor="let one of cv.messaging" class="input-group">
+						<select class="form-control w-25" [(ngModel)]="one.provider">
+							<option value="GHangouts" selected>GHangouts</option>
+							<option value="Skype">Skype</option>
+							<option value="ICQ">ICQ</option>
+							<option value="AIM">AIM</option>
+							<option value="MSN">MSN</option>
+							<option value="YIM">YIM</option>
+						</select>
+						<input type="text" class="form-control w-75" placeholder="Username" [(ngModel)]="one.username">
+					</div>
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.messaging.push({ provider: '', username: '' })">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.messaging.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Gender, Birth date, Nationality</h5>
+			<div class="card-body">
+				<select class="form-control" [(ngModel)]="cv.sex">
+					<option value="Male">Male</option>
+					<option value="Female">Female</option>
+					<option value="Not specified">Rather not specify</option>
+				</select>
+				
+				<input type="date" class="form-control" [ngModel]="cv.birth | date: 'yyyy-MM-dd'" (ngModelChange)="cv.birth = parse($event)">
+				
+				<div class="my-2">
+					<input *ngFor="let one of cv.nationality; index as i; trackBy: track" type="text" class="form-control" placeholder="Nationality" [(ngModel)]="cv.nationality[i]">
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.nationality.push('')">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.nationality.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Application</h5>
+			<div class="card-body">
+				<input type="text" class="form-control" placeholder="Application Type" [(ngModel)]="cv.applicationtype">
+				<input type="text" class="form-control" placeholder="Description" [(ngModel)]="cv.description">
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Work experience</h5>
+			<div class="card-body">
+				<div class="my-2">
+					<div *ngFor="let one of cv.work" class="mb-1">
+						<input type="date" class="form-control" [ngModel]="one.from | date: 'yyyy-MM-dd'" (ngModelChange)="one.from = parse($event)">
+						<div class="input-group">
+							<input type="date" class="form-control" style="width: calc(100% - 40px);" [ngModel]="one.to | date: 'yyyy-MM-dd'" (ngModelChange)="one.to = parse($event)">
+							<input type="checkbox" class="form-control" style="width: 40px;" [ngModel]="!one.to" (ngModelChange)="one.to = $event ? undefined : now()">
+						</div>
+						<input type="text" class="form-control" placeholder="Position" [(ngModel)]="one.position">
+						<input type="text" class="form-control" placeholder="Employer" [(ngModel)]="one.employer">
+						<input type="text" class="form-control" placeholder="City" [(ngModel)]="one.city">
+						<input type="text" class="form-control" placeholder="Country" [(ngModel)]="one.country">
+						<input type="text" class="form-control" placeholder="Street address" [(ngModel)]="one.streetaddress">
+						<input type="text" class="form-control" placeholder="Postal code" [(ngModel)]="one.postalcode">
+						<input type="text" class="form-control" placeholder="Website" [(ngModel)]="one.website">
+						<input type="text" class="form-control" placeholder="Sector" [(ngModel)]="one.sector">
+						<textarea class="form-control" style="resize: none;" rows="4" placeholder="Activities" [(ngModel)]="one.activities"></textarea>
+					</div>
+					<div class="input-group">
+						<button type="button" class="btn btn-primary btn-sm w-50" (click)="cv.work.push({ from: now(), to: now(), position: '', employer: '', city: '', country: '', streetaddress: '', postalcode: '', website: '', sector: '', activities: '' })">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-50" (click)="cv.work.pop()">-</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Education</h5>
+			<div class="card-body">
+				<div class="my-2">
+					<div *ngFor="let one of cv.education" class="mb-1">
+						<input type="date" class="form-control" [ngModel]="one.from | date: 'yyyy-MM-dd'" (ngModelChange)="one.from = parse($event)">
+						<div class="input-group">
+							<input type="date" class="form-control" style="width: calc(100% - 40px);" [ngModel]="one.to | date: 'yyyy-MM-dd'" (ngModelChange)="one.to = parse($event)">
+							<input type="checkbox" class="form-control" style="width: 40px;" [ngModel]="!one.to" (ngModelChange)="one.to = $event ? undefined : now()">
+						</div>
+						<input type="text" class="form-control" placeholder="Qualification" [(ngModel)]="one.qualification">
+						<input type="text" class="form-control" placeholder="Organization" [(ngModel)]="one.organization">
+						<input type="text" class="form-control" placeholder="City" [(ngModel)]="one.city">
+						<input type="text" class="form-control" placeholder="Country" [(ngModel)]="one.country">
+						<input type="text" class="form-control" placeholder="Street address" [(ngModel)]="one.streetaddress">
+						<input type="text" class="form-control" placeholder="Postal code" [(ngModel)]="one.postalcode">
+						<input type="text" class="form-control" placeholder="Website" [(ngModel)]="one.website">
+						<input type="number" min="1" max="8" class="form-control" placeholder="EQF Level" [(ngModel)]="one.eqf">
+						<input type="text" class="form-control" placeholder="Field" [(ngModel)]="one.field">
+						<textarea class="form-control" style="resize: none;" rows="4" placeholder="Subjects" [(ngModel)]="one.subjects"></textarea>
+					</div>
+					<div class="input-group">
+						<button type="button" class="btn btn-primary btn-sm w-50" (click)="cv.education.push({ from: now(), to: now(), qualification: '', organization: '', city: '', country: '', streetaddress: '', postalcode: '', website: '', eqf: 0, subjects: '', field: '' })">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-50" (click)="cv.education.pop()">-</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Languages</h5>
+			<div class="card-body">
+				<div class="my-2">
+					<input *ngFor="let one of cv.nativelanguages; index as i; trackBy: track" type="text" class="form-control" placeholder="Native language" [(ngModel)]="cv.nativelanguages[i]">
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.nativelanguages.push('')">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.nativelanguages.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+				
+				<div class="my-2">
+					<div *ngFor="let one of cv.foreignlanguages" class="mb-1">
+						<input type="text" class="form-control" placeholder="Foreign language" [(ngModel)]="one.language">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Listening" disabled>
+							<select class="form-control" [(ngModel)]="one.listening">
+								<option value="A1">A1</option>
+								<option value="A2">A2</option>
+								<option value="B1">B1</option>
+								<option value="B2">B2</option>
+								<option value="C1">C1</option>
+								<option value="C2">C2</option>
+							</select>
+						</div>
+						
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Reading" disabled>
+							<select class="form-control" [(ngModel)]="one.reading">
+								<option value="A1">A1</option>
+								<option value="A2">A2</option>
+								<option value="B1">B1</option>
+								<option value="B2">B2</option>
+								<option value="C1">C1</option>
+								<option value="C2">C2</option>
+							</select>
+						</div>
+						
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Interaction" disabled>
+							<select class="form-control" [(ngModel)]="one.interaction">
+								<option value="A1">A1</option>
+								<option value="A2">A2</option>
+								<option value="B1">B1</option>
+								<option value="B2">B2</option>
+								<option value="C1">C1</option>
+								<option value="C2">C2</option>
+							</select>
+						</div>
+						
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Production" disabled>
+							<select class="form-control" [(ngModel)]="one.production">
+								<option value="A1">A1</option>
+								<option value="A2">A2</option>
+								<option value="B1">B1</option>
+								<option value="B2">B2</option>
+								<option value="C1">C1</option>
+								<option value="C2">C2</option>
+							</select>
+						</div>
+						
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Writing" disabled>
+							<select class="form-control" [(ngModel)]="one.writing">
+								<option value="A1">A1</option>
+								<option value="A2">A2</option>
+								<option value="B1">B1</option>
+								<option value="B2">B2</option>
+								<option value="C1">C1</option>
+								<option value="C2">C2</option>
+							</select>
+						</div>
+						
+						<div class="my-2">
+							<input *ngFor="let _one of one.certificates; index as i; trackBy: track" type="text" class="form-control" placeholder="Certificate" [(ngModel)]="one.certificates[i]">
+							<div class="input-group my-1">
+								<div class="w-25"></div>
+								<button type="button" class="btn btn-primary btn-sm w-25" (click)="one.certificates.push('')">+</button>
+								<button type="button" class="btn btn-secondary btn-sm w-25" (click)="one.certificates.pop()">-</button>
+								<div class="w-25"></div>
+							</div>
+						</div>
+					</div>
+					<div class="input-group">
+						<button type="button" class="btn btn-primary btn-sm w-50" (click)="cv.foreignlanguages.push({ language: '', listening: '', reading: '', interaction: '', production: '', writing: '', certificates: [''] })">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-50" (click)="cv.foreignlanguages.pop()">-</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Skills</h5>
+			<div class="card-body">
+				<textarea class="form-control" style="resize: none;" rows="4" placeholder="Communication skills" [(ngModel)]="cv.communicationskills"></textarea>
+				<textarea class="form-control" style="resize: none;" rows="4" placeholder="Organizational skills" [(ngModel)]="cv.organizationalskills"></textarea>
+				<textarea class="form-control" style="resize: none;" rows="4" placeholder="Job skills" [(ngModel)]="cv.jobskills"></textarea>
+			</div>
+		</div>
+		
+		<div class="card my-2">
+			<h5 class="card-header">Digital skills</h5>
+			<div class="card-body">
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Information processing" disabled>
+					<select class="form-control" [(ngModel)]="cv.digitalskills.infoprocessing">
+						<option value="Basic user">Basic user</option>
+						<option value="Independent user">Independent user</option>
+						<option value="Proficient user">Proficient user</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Communication" disabled>
+					<select class="form-control" [(ngModel)]="cv.digitalskills.communication">
+						<option value="Basic user">Basic user</option>
+						<option value="Independent user">Independent user</option>
+						<option value="Proficient user">Proficient user</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Content creation" disabled>
+					<select class="form-control" [(ngModel)]="cv.digitalskills.contentcreation">
+						<option value="Basic user">Basic user</option>
+						<option value="Independent user">Independent user</option>
+						<option value="Proficient user">Proficient user</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Safety" disabled>
+					<select class="form-control" [(ngModel)]="cv.digitalskills.safety">
+						<option value="Basic user">Basic user</option>
+						<option value="Independent user">Independent user</option>
+						<option value="Proficient user">Proficient user</option>
+					</select>
+				</div>
+				
+				<div class="input-group">
+					<input type="text" class="form-control" placeholder="Problem solving" disabled>
+					<select class="form-control" [(ngModel)]="cv.digitalskills.problemsolving">
+						<option value="Basic user">Basic user</option>
+						<option value="Independent user">Independent user</option>
+						<option value="Proficient user">Proficient user</option>
+					</select>
+				</div>
+				
+				<div class="my-2">
+					<input *ngFor="let one of cv.digitalskills.certificates; index as i; trackBy: track" type="text" class="form-control" placeholder="Certificate" [(ngModel)]="cv.digitalskills.certificates[i]">
+					<div class="input-group my-1">
+						<div class="w-25"></div>
+						<button type="button" class="btn btn-primary btn-sm w-25" (click)="cv.digitalskills.certificates.push('')">+</button>
+						<button type="button" class="btn btn-secondary btn-sm w-25" (click)="cv.digitalskills.certificates.pop()">-</button>
+						<div class="w-25"></div>
+					</div>
+				</div>
+				
+				<textarea class="form-control" style="resize: none;" rows="4" placeholder="Other" [(ngModel)]="cv.digitalskills.other"></textarea>
+			</div>
+		</div>
+		
+		<div class="container-fluid my-4">
+			<button type="button" class="btn btn-primary btn-sm btn-block" (click)="update()">Update CV</button>
+		</div>
+	</div>
+</div>

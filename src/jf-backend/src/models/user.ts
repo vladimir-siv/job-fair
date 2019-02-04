@@ -2,31 +2,32 @@ import mongoose from "mongoose";
 
 let user = new mongoose.Schema
 ({
-	username: { type: String },
-	password: { type: String },
+	username: String,
+	password: String,
 	person:
 	{
-		firstname: { type: String },
-		lastname: { type: String },
-		phone: { type: String },
-		email: { type: String },
+		firstname: String,
+		lastname: String,
+		phone: String,
+		email: String,
 		student:
 		{
-			year: { type: Number },
-			graduated: { type: Boolean }
+			year: Number,
+			graduated: Boolean,
+			cv: Object
 		}
 	},
 	company:
 	{
-		name: { type: String },
-		address: { type: String },
-		director: { type: String },
-		cin: { type: String },
-		employees: { type: Number },
-		email: { type: String },
-		web: { type: String },
-		sector: { type: String },
-		speciality: { type: String }
+		name: String,
+		address: String,
+		director: String,
+		cin: String,
+		employees: Number,
+		email: String,
+		web: String,
+		sector: String,
+		speciality: String
 	}
 });
 

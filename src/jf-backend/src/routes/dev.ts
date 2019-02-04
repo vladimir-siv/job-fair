@@ -16,7 +16,7 @@ router.post("/upload", (req, res, next) =>
 	let code: number = 200;
 	let response =
 	{
-		result: "failure",
+		result: "danger",
 		message: "Could not upload file(s)."
 	};
 	
@@ -45,7 +45,7 @@ router.post("/create-admin", (req, res, next) =>
 	user.findOne({ username: req.body.username }, (err: any, data: Document) =>
 	{
 		if (err) return next(err);
-		if (data) return res.status(200).json({ result: "failure", message: "Username already in use." });
+		if (data) return res.status(200).json({ result: "danger", message: "Username already in use." });
 		
 		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
 		
