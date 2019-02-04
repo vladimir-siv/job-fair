@@ -5,6 +5,7 @@ import { PopupComponent } from "./popups/popup/popup.component";
 import { AlertComponent } from "./popups/alert/alert.component";
 import { PopupFeed } from "./popups/PopupFeed";
 import { AlertFeed } from "./popups/AlertFeed";
+import { PromptAlertFeedComponent } from "./popups/prompt-alert-feed/prompt-alert-feed.component";
 import { AccountManagerService } from "./ajax/services/account-manager.service";
 import { IAccountInfo } from "./models/account.model";
 import * as JQ from "jquery";
@@ -35,6 +36,7 @@ export class AppComponent implements AfterViewInit
 	
 	@ViewChild("popup") private popup: PopupComponent;
 	@ViewChild("alert") private alert: AlertComponent;
+	@ViewChild("prompt") private prompt: PromptAlertFeedComponent;
 	
 	private win: JQuery<Window> = JQ(window);
 	public get window(): JQuery<Window> { return this.win; }
@@ -113,5 +115,10 @@ export class AppComponent implements AfterViewInit
 	{
 		this.alert.feed = feed;
 		this.alert.show();
+	}
+	
+	public showPromptAlert(type: string, content: string, heading: string = "", dismissable: boolean = true)
+	{
+		this.showAlert(this.prompt.create(type, content, heading, dismissable));
 	}
 }

@@ -10,7 +10,7 @@ import { IAccountInfo } from "../../models/account.model";
 })
 export class AccountManagerService
 {
-	constructor
+	public constructor
 	(
 		private router: Router,
 		private http: HttpClient

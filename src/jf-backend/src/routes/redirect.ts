@@ -1,8 +1,14 @@
 import express from "express";
-import path from "path";
 import { NextFunction } from "connect";
 
 let router = express.Router();
+
+function redirectIfNotAdmin(req: express.Request, res: express.Response, next: NextFunction)
+{
+	// @ts-ignore
+	if (req.session.user && req.session.user.person && !req.session.user.person.student) next();
+	else res.redirect("/home");
+}
 
 function redirectToIndex(req: express.Request, res: express.Response, next: NextFunction)
 {
@@ -18,6 +24,8 @@ function redirectToHome(req: express.Request, res: express.Response, next: NextF
 	else next();
 }
 
+router.get("/admin", redirectIfNotAdmin);
+router.all("/admin/*", redirectIfNotAdmin);
 router.get("/index", redirectToHome);
 router.get("/home", redirectToIndex);
 router.get("/profile", redirectToIndex);

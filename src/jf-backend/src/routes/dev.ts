@@ -3,7 +3,6 @@ import fileupload from "express-fileupload";
 import path from "path";
 import crypto from "crypto";
 import user from "../models/user";
-import sharedlib from "../shared/library";
 
 let router = express.Router();
 
