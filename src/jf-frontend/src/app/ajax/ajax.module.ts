@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AccountManagerService } from "./services/account-manager.service";
 import { DatabaseManagerService } from "./services/database-manager.service";
+import { DevService } from "./services/dev.service";
 
 @NgModule
 ({
@@ -18,7 +19,8 @@ import { DatabaseManagerService } from "./services/database-manager.service";
 	providers:
 	[
 		AccountManagerService,
-		DatabaseManagerService
+		DatabaseManagerService,
+		DevService
 	]
 })
 export class AjaxModule { }

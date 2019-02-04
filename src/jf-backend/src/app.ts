@@ -39,8 +39,8 @@ app.use
 	({
 		createParentPath: true,
 		limits: { fileSize: 25 * 1024 * 1024 },
-		useTempFiles: true,
-		tempFileDir: "\\..\\..\\..\\tmp\\",
+		//useTempFiles: true,
+		//tempFileDir: "\\..\\..\\..\\tmp\\",
 		safeFileNames: true,
 		preserveExtension: 10,
 		abortOnLimit: true,
