@@ -27,7 +27,14 @@ let user = new mongoose.Schema
 		email: String,
 		web: String,
 		sector: String,
-		speciality: String
+		speciality: String,
+		openings:
+		[{
+			started: { type: Date, default: Date.now },
+			position: String,
+			description: String,
+			deadline: Date
+		}]
 	}
 });
 

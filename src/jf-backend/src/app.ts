@@ -13,6 +13,7 @@ import dbRouter from "./routes/db";
 import redirectRouter from "./routes/redirect";
 import adminRouter from "./routes/admin";
 import accountRouter from "./routes/account";
+import companyRouter from "./routes/company";
 
 let angularApp = express.static(path.join(__dirname, "../../jf-frontend/dist/jf-frontend"));
 
@@ -62,6 +63,7 @@ app.use("/", redirectRouter);
 
 app.use("/admin", adminRouter);
 app.use("/account", accountRouter);
+app.use("/company", companyRouter);
 
 app.use("/*", angularApp);
 

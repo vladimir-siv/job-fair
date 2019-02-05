@@ -31,10 +31,18 @@ function redirectIfNotStudent(req: express.Request, res: express.Response, next:
 	else res.redirect("/home");
 }
 
+function redirectIfNotCompany(req: express.Request, res: express.Response, next: NextFunction)
+{
+	// @ts-ignore
+	if (req.session.user && req.session.user.company) next();
+	else res.redirect("/home");
+}
+
 router.get("/index", redirectToHome);
 router.get("/home", redirectToIndex);
 router.get("/profile", redirectToIndex);
 router.get("/cvedit", redirectIfNotStudent);
+router.get("/new-opening", redirectIfNotCompany);
 router.get("/admin", redirectIfNotAdmin);
 router.all("/admin/*", redirectIfNotAdmin);
 

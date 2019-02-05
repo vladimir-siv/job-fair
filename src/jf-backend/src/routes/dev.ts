@@ -11,7 +11,7 @@ router.get("/", (req, res, next) =>
 	res.send("respond with a resource");
 });
 
-router.post("/upload", (req, res, next) =>
+router.post("/upload", async (req, res, next) =>
 {
 	let code: number = 200;
 	let response =
@@ -23,18 +23,14 @@ router.post("/upload", (req, res, next) =>
 	if (req.files)
 	{
 		let uploads = <{ files: fileupload.UploadedFile[] }>req.files;
-		let success = true;
 		
 		for (let i = 0; i < uploads.files.length; ++i)
 		{
-			uploads.files[i].mv(path.join(__dirname, "../../images/", uploads.files[i].name), err => success = err ? false : success);
+			await uploads.files[i].mv(path.join(__dirname, "../../images/", uploads.files[i].name));
 		}
 		
-		if (success)
-		{
-			response.result = "success";
-			response.message = "Files were uploaded successfully.";
-		}
+		response.result = "success";
+		response.message = "Files were uploaded successfully.";
 	}
 	
 	return res.status(code).json(response);

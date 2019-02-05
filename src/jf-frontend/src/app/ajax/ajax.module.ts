@@ -4,6 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AccountManagerService } from "./services/account-manager.service";
 import { DatabaseManagerService } from "./services/database-manager.service";
+import { CompanyService } from "./services/company.service";
 import { DevService } from "./services/dev.service";
 
 @NgModule
@@ -20,6 +21,7 @@ import { DevService } from "./services/dev.service";
 	[
 		AccountManagerService,
 		DatabaseManagerService,
+		CompanyService,
 		DevService
 	]
 })

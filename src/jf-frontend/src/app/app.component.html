@@ -82,6 +82,7 @@
 			<a class="nav-item nav-link" href="/companies"><i class="icon ion-ios-search"></i> Companies</a>
 			<a *ngIf="_accinfo" class="nav-item nav-link" href="/profile"><i class="icon ion-ios-pie"></i> Profile</a>
 			<a *ngIf="_accinfo && _accinfo.person && _accinfo.person.student" class="nav-item nav-link" href="/cvedit"><i class="icon ion-ios-cog"></i> CV</a>
+			<a *ngIf="_accinfo && _accinfo.company" class="nav-item nav-link" href="/new-opening"><i class="icon ion-ios-cog"></i> New Opening</a>
 			<a *ngIf="_accinfo && _accinfo.person && !_accinfo.person.student" class="nav-item nav-link" href="/admin"><i class="icon ion-ios-cog"></i> Admin</a>
 		</div>
 	</nav>
