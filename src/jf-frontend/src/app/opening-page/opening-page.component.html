@@ -11,34 +11,6 @@
 				<th scope="row">Username:</th>
 				<td>{{ data?.username }}</td>
 			</tr>
-			<ng-container *ngIf="data && data.person">
-				<tr>
-					<th scope="row">First name:</th>
-					<td>{{ data.person.firstname }}</td>
-				</tr>
-				<tr>
-					<th scope="row">Last name:</th>
-					<td>{{ data.person.lastname }}</td>
-				</tr>
-				<tr>
-					<th scope="row">Phone:</th>
-					<td>{{ data.person.phone }}</td>
-				</tr>
-				<tr>
-					<th scope="row">E-Mail:</th>
-					<td>{{ data.person.email }}</td>
-				</tr>
-				<ng-container *ngIf="data.person.student">
-					<tr>
-						<th scope="row">Year of Study:</th>
-						<td>{{ data.person.student.year }}</td>
-					</tr>
-					<tr>
-						<th scope="row">Graduated:</th>
-						<td>{{ data.person.student.graduated }}</td>
-					</tr>
-				</ng-container>
-			</ng-container>
 			<ng-container *ngIf="data && data.company">
 				<tr>
 					<th scope="row">Name:</th>
@@ -80,25 +52,41 @@
 		</tbody>
 	</table>
 	
-	<table *ngIf="data && data.company && data.company.openings" class="table table-striped table-dark">
+	<table *ngIf="data && data.company && data.company.openings && data.company.openings[opening]" class="table table-striped table-dark">
 		<thead>
 			<tr>
-				<th scope="col">Started</th>
-				<th scope="col">Job</th>
-				<th scope="col">Internship</th>
-				<th scope="col">Position</th>
-				<th scope="col">Deadline</th>
-				<th scope="col">Reference</th>
+				<th scope="col">Field</th>
+				<th scope="col">Value</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let one of data.company.openings; index as i">
-				<td>{{ one.started }}</td>
-				<td>{{ one.job }}</td>
-				<td>{{ one.internship }}</td>
-				<td>{{ one.position }}</td>
-				<td>{{ one.deadline }}</td>
-				<td><a href="/opening/{{ data.username }}/{{ i }}" target="_blank">Details</a></td>
+			<tr>
+				<th scope="row">Started:</th>
+				<td>{{ data.company.openings[opening].started }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Job:</th>
+				<td>{{ data.company.openings[opening].job }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Internship:</th>
+				<td>{{ data.company.openings[opening].internship }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Position:</th>
+				<td>{{ data.company.openings[opening].position }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Description:</th>
+				<td>{{ data.company.openings[opening].description }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Deadline:</th>
+				<td>{{ data.company.openings[opening].deadline }}</td>
+			</tr>
+			<tr>
+				<th scope="row">Attachments:</th>
+				<td><a *ngFor="let one of data.company.openings[opening].attachments; index as i" [href]="one" target="_blank" class="mx-1">{{ i + 1 }}</a></td>
 			</tr>
 		</tbody>
 	</table>

@@ -18,6 +18,8 @@ export class NewOpeningPageComponent implements OnInit
 	
 	parse(date: string) { return new Date(date); }
 	
+	private job: boolean = true;
+	private internship: boolean = false;
 	private position: string;
 	private description: string;
 	private deadline: Date;
@@ -52,6 +54,8 @@ export class NewOpeningPageComponent implements OnInit
 		
 		let form: FormData = new FormData();
 		
+		form.append("job", this.job ? "true" : "false");
+		form.append("internship", this.internship ? "true" : "false");
 		form.append("position", this.position);
 		form.append("description", this.description);
 		form.append("deadline", this.deadline.toISOString());

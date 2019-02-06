@@ -1,4 +1,6 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import user from "../models/user";
 
 let router = express.Router();
@@ -15,13 +17,39 @@ router.get("/users/:username", (req, res, next) =>
 		
 		if (data)
 		{
-			// @ts-ignore
-			data.password = "";
+			let accinfo: any = data.toJSON();
 			
-			// @ts-ignore
-			if (req.session.user || data.company.name)
+			accinfo.password = "";
+			
+			if (accinfo.person && accinfo.person.student && accinfo.person.student.cv)
 			{
-				return res.status(200).json({ info: data });
+				accinfo.person.student.cv = undefined;
+			}
+			
+			if (accinfo.company && accinfo.company.openings)
+			{
+				if (req.session && req.session.user)
+				{
+					for (let i = 0; i < accinfo.company.openings.length; ++i)
+					{
+						accinfo.company.openings[i].attachments = [];
+						
+						let link = path.join(accinfo.username, accinfo.company.openings[i].position + "-" + accinfo.company.openings[i].started.valueOf());
+						
+						let attachments = fs.readdirSync(path.join(__dirname, "../../storage/users/", link));
+						
+						for (let j = 0; j < attachments.length; ++j)
+						{
+							accinfo.company.openings[i].attachments.push(path.join("/storage/openings/", link, attachments[j]).replace(/\\/g, "/"));
+						}
+					}
+				}
+				else accinfo.company.openings = undefined;
+			}
+			
+			if (req.session && req.session.user || accinfo.company)
+			{
+				return res.status(200).json({ info: accinfo });
 			}
 		}
 		

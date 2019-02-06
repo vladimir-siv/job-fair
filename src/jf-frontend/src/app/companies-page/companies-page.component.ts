@@ -26,7 +26,7 @@ export class CompaniesPageComponent implements OnInit
 	{
 		for (let i = 0; i < this.context.sectors.length; ++i)
 		{
-			this.sectors[this.context.sectors[i]] = false;
+			this.sectors[this.context.sectors[i]] = true;
 		}
 	}
 	

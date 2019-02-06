@@ -7,8 +7,7 @@ let router = express.Router();
 
 router.post("/new-opening", (req, res, next) =>
 {
-	// @ts-ignore
-	if (!req.session.user || !req.session.user.company)
+	if (!req.session || !req.session.user || !req.session.user.company)
 	{
 		return res.status(200).json({ result: "danger", message: "Could not publicize new opening." });
 	}
@@ -25,7 +24,6 @@ router.post("/new-opening", (req, res, next) =>
 		return res.status(200).json({ result: "danger", message: "Not all fields present." });
 	}
 	
-	// @ts-ignore
 	user.findOne({ username: req.session.user.username }, (err, data) =>
 	{
 		if (err)
@@ -47,6 +45,8 @@ router.post("/new-opening", (req, res, next) =>
 		data.company.openings.push
 		({
 			started: new Date(now),
+			job: req.body.job.toLocaleLowerCase() == "true",
+			internship: req.body.internship.toLocaleLowerCase() == "true",
 			position: req.body.position,
 			description: req.body.description,
 			deadline: req.body.deadline
@@ -75,6 +75,8 @@ router.post("/new-opening", (req, res, next) =>
 				}
 			}
 			
+			// @ts-ignore
+			req.session.user.company.openings = data.company.openings;
 			res.status(200).json({ result: "success", message: "Successfully publicized new opening!" });
 		});
 	});

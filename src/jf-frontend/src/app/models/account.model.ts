@@ -25,6 +25,16 @@ export interface IAccountInfo
 		email: string,
 		web: string,
 		sector: string,
-		speciality: string
+		speciality: string,
+		openings:
+		{
+			started: Date,
+			job: boolean,
+			internship: boolean,
+			position: string,
+			description: string,
+			deadline: Date
+			attachments: string[]
+		}[]
 	}
 }

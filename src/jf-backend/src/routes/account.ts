@@ -12,8 +12,7 @@ let router = express.Router();
 
 router.post("/register-student", (req, res, next) =>
 {
-	// @ts-ignore
-	if (req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
+	if (req.session && req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
 	
 	let bodyKeys = Object.keys(req.body);
 	
@@ -101,6 +100,8 @@ router.post("/register-student", (req, res, next) =>
 		delete req.body.year;
 		delete req.body.graduated;
 		
+		req.body.company = undefined;
+		
 		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
 		delete req.body.pwconfirm;
 		
@@ -140,8 +141,7 @@ router.post("/register-student", (req, res, next) =>
 
 router.post("/register-company", (req, res, next) =>
 {
-	// @ts-ignore
-	if (req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
+	if (req.session && req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
 	
 	let bodyKeys = Object.keys(req.body);
 	
@@ -238,6 +238,8 @@ router.post("/register-company", (req, res, next) =>
 		delete req.body.sector;
 		delete req.body.speciality;
 		
+		req.body.student = undefined;
+		
 		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
 		delete req.body.pwconfirm;
 		
@@ -277,7 +279,7 @@ router.post("/register-company", (req, res, next) =>
 
 router.post("/login", (req, res, next) =>
 {
-	// @ts-ignore
+	if (!req.session) return res.status(200).json({ result: "danger", message: "Could not login." });
 	if (req.session.user) return res.status(200).json({ result: "danger", message: "Already logged in." });
 	
 	if
@@ -292,6 +294,9 @@ router.post("/login", (req, res, next) =>
 	
 	user.findOne({ username: req.body.username, password: crypto.createHash("md5").update(req.body.password).digest("hex") }, (err: any, data: Document) =>
 	{
+		// won't ever happen
+		if (!req.session) return;
+		
 		if (err)
 		{
 			console.log("Error finding username: \"" + req.body.username + "\"");
@@ -300,9 +305,7 @@ router.post("/login", (req, res, next) =>
 		
 		if (data)
 		{
-			// @ts-ignore
 			req.session.user = data;
-			// @ts-ignore
 			req.session.user.password = "";
 			
 			res.status(200).json({ result: "success", message: "Login successful." });
@@ -313,8 +316,7 @@ router.post("/login", (req, res, next) =>
 
 router.get("/logout", (req, res, next) =>
 {
-	// @ts-ignore
-	delete req.session.user;
+	if (req.session) delete req.session.user;
 	res.redirect("/");
 });
 
@@ -369,14 +371,12 @@ router.post("/password", (req, res, next) =>
 
 router.get("/info", (req, res, next) =>
 {
-	// @ts-ignore
-	res.status(200).json({ info: req.session.user });
+	res.status(200).json({ info: req.session ? req.session.user : undefined });
 });
 
 router.post("/updatecv", (req, res, next) =>
 {
-	// @ts-ignore
-	if (!req.session.user || !req.session.user.person || !req.session.user.person.student)
+	if (!req.session || !req.session.user || !req.session.user.person || !req.session.user.person.student)
 	{
 		return res.status(200).json({ result: "danger", message: "Could not update CV." });
 	}

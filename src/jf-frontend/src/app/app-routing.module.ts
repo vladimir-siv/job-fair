@@ -6,6 +6,7 @@ import { CompaniesPageComponent } from "./companies-page/companies-page.componen
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { CVEditPageComponent } from "./cvedit-page/cvedit-page.component";
 import { NewOpeningPageComponent } from "./new-opening-page/new-opening-page.component";
+import { OpeningPageComponent } from "./opening-page/opening-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
@@ -19,6 +20,7 @@ const routes: Routes =
 	{ path: "profile/:username", component: ProfilePageComponent },
 	{ path: "cvedit", component: CVEditPageComponent },
 	{ path: "new-opening", component: NewOpeningPageComponent },
+	{ path: "opening/:company/:opening", component: OpeningPageComponent },
 	{ path: "admin", component: AdminPageComponent },
 	{ path: "**", component: PageNotFoundComponent }
 ];

@@ -31,6 +31,8 @@ let user = new mongoose.Schema
 		openings:
 		[{
 			started: { type: Date, default: Date.now },
+			job: Boolean,
+			internship: Boolean,
 			position: String,
 			description: String,
 			deadline: Date
