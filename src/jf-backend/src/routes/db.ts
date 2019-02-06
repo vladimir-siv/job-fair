@@ -76,4 +76,91 @@ router.post("/companies", (req, res, next) =>
 	});
 });
 
+router.post("/jobs", (req, res, next) =>
+{
+	if (!req.body.name) req.body.name = "";
+	if (!req.body.position) req.body.position = "";
+	
+	let query;
+	
+	if (req.body.job && req.body.internship)
+	{
+		query =
+		{
+			"company": { $exists: true },
+			"company.name": new RegExp(req.body.name, "i"),
+			"company.openings": { $exists: true },
+			"company.openings.position": new RegExp(req.body.position, "i"),
+			$or:
+			[
+				{ "company.openings.job": true },
+				{ "company.openings.internship": true }
+			]
+		};
+	}
+	else
+	{
+		query =
+		{
+			"company": { $exists: true },
+			"company.name": new RegExp(req.body.name, "i"),
+			"company.openings": { $exists: true },
+			"company.openings.position": new RegExp(req.body.position, "i"),
+			"company.openings.job": true,
+			"company.openings.internship": true
+		};
+		
+		if (!req.body.job) delete query["company.openings.job"];
+		if (!req.body.internship) delete query["company.openings.internship"];
+	}
+	
+	let results:
+	{
+		companies: { username: string, name: string }[],
+		openings: { username: string, index: number, position: string }[],
+	} = { companies: [], openings: [] };
+	
+	user.find(query, { "username": 1, "company.name": 1, "company.openings": 1 }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not do the serach.");
+			return next(err);
+		}
+		
+		if (data)
+		{
+			// @ts-ignore
+			results.companies = data.map(doc => ({ username: doc.username, name: doc.company.name }));
+			
+			for (let i = 0; i < data.length; ++i)
+			{
+				// @ts-ignore
+				for (let j = 0; j < data[i].company.openings.length; ++j)
+				{
+					// @ts-ignore
+					let opening = data[i].company.openings[j];
+				
+					if
+						(
+						opening.position.search(new RegExp(req.body.position, "i")) != -1
+						&&
+						(
+							(req.body.job && opening.job)
+							||
+							(req.body.internship && opening.internship)
+						)
+					)
+					{
+						// @ts-ignore
+						results.openings.push({ username: data[i].username, index: j, position: opening.position });
+					}
+				}
+			}
+		}
+		
+		res.status(200).json({ results: results });
+	});
+});
+
 export default router;

@@ -24,4 +24,9 @@ export class DatabaseManagerService
 	{
 		this.http.post<{ results: { username: string, name: string }[] }>("/db/companies", { name: name, address: address, sectors: sectors }).subscribe(callback);
 	}
+	
+	public jobs(job: boolean, internship: boolean, name: string, position: string, callback: ((response: { results: any }) => void))
+	{
+		this.http.post<{ results: any }>("/db/jobs", { job: job, internship: internship, name: name, position: position }).subscribe(callback);
+	}
 }

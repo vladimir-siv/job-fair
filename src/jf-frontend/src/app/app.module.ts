@@ -13,6 +13,7 @@ import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { CompaniesPageComponent } from "./companies-page/companies-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 import { CVEditPageComponent } from "./cvedit-page/cvedit-page.component";
+import { JobSearchPageComponent } from "./job-search-page/job-search-page.component";
 import { NewOpeningPageComponent } from "./new-opening-page/new-opening-page.component";
 import { OpeningPageComponent } from "./opening-page/opening-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
@@ -30,6 +31,7 @@ import { InjectionContext } from "./DependencyInjection/injection-context.servic
 		CompaniesPageComponent,
 		AdminPageComponent,
 		CVEditPageComponent,
+		JobSearchPageComponent,
 		NewOpeningPageComponent,
 		OpeningPageComponent,
 		PageNotFoundComponent

@@ -35,8 +35,10 @@ function redirectIfNotCompany(req: express.Request, res: express.Response, next:
 
 router.get("/index", redirectToHome);
 router.get("/home", redirectToIndex);
+router.post("/db/*", redirectToIndex);
 router.get("/profile", redirectToIndex);
 router.get("/cvedit", redirectIfNotStudent);
+router.get("/job-search", redirectIfNotStudent);
 router.get("/new-opening", redirectIfNotCompany);
 router.get("/opening/*", redirectToIndex);
 router.get("/admin", redirectIfNotAdmin);

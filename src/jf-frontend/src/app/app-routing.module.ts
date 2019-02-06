@@ -5,6 +5,7 @@ import { HomePageComponent } from "./home-page/home-page.component";
 import { CompaniesPageComponent } from "./companies-page/companies-page.component";
 import { ProfilePageComponent } from "./profile-page/profile-page.component";
 import { CVEditPageComponent } from "./cvedit-page/cvedit-page.component";
+import { JobSearchPageComponent } from "./job-search-page/job-search-page.component";
 import { NewOpeningPageComponent } from "./new-opening-page/new-opening-page.component";
 import { OpeningPageComponent } from "./opening-page/opening-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
@@ -19,6 +20,7 @@ const routes: Routes =
 	{ path: "profile", component: ProfilePageComponent },
 	{ path: "profile/:username", component: ProfilePageComponent },
 	{ path: "cvedit", component: CVEditPageComponent },
+	{ path: "job-search", component: JobSearchPageComponent },
 	{ path: "new-opening", component: NewOpeningPageComponent },
 	{ path: "opening/:company/:opening", component: OpeningPageComponent },
 	{ path: "admin", component: AdminPageComponent },

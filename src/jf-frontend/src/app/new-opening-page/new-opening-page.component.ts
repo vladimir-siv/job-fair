@@ -26,10 +26,7 @@ export class NewOpeningPageComponent implements OnInit
 	
 	private prompts: { type: string, content: string }[] = [];
 	
-	ngOnInit()
-	{
-		
-	}
+	ngOnInit() { }
 	
 	open(files: FileList)
 	{
@@ -60,8 +57,9 @@ export class NewOpeningPageComponent implements OnInit
 		form.append("description", this.description);
 		form.append("deadline", this.deadline.toISOString());
 		
-		for (let i = 0; i < files.length; ++i)
-			form.append("files[" + i + "]", files[i], files[i].name);
+		if (files)
+			for (let i = 0; i < files.length; ++i)
+				form.append("files[" + i + "]", files[i], files[i].name);
 		
 		this.company.publicize(form, response =>
 		{

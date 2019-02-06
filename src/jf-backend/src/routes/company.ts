@@ -1,5 +1,6 @@
 import express from "express";
 import fileupload from "express-fileupload";
+import fs from "fs";
 import path from "path";
 import user from "../models/user";
 
@@ -61,16 +62,23 @@ router.post("/new-opening", (req, res, next) =>
 				return next(err);
 			}
 			
+			// @ts-ignore
+			let dir = path.join(__dirname, "../../storage/users/", req.session.user.username, req.body.position + "-" + now);
+			fs.mkdirSync(dir);
+			
 			if (req.files)
 			{
 				let uploads = <{ files: fileupload.UploadedFile[] }>req.files;
 				
-				for (let i = 0; i < uploads.files.length; ++i)
+				if (uploads.files)
 				{
-					if (uploads.files[i].name.endsWith(".pdf"))
+					for (let i = 0; i < uploads.files.length; ++i)
 					{
-						// @ts-ignore
-						await uploads.files[i].mv(path.join(__dirname, "../../storage/users/", req.session.user.username, req.body.position + "-" + now, uploads.files[i].name));
+						if (uploads.files[i].name.endsWith(".pdf"))
+						{
+							// @ts-ignore
+							await uploads.files[i].mv(path.join(dir, uploads.files[i].name));
+						}
 					}
 				}
 			}
