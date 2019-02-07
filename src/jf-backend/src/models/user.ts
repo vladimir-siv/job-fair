@@ -35,7 +35,14 @@ let user = new mongoose.Schema
 			internship: Boolean,
 			position: String,
 			description: String,
-			deadline: Date
+			deadline: Date,
+			applications:
+			[{
+				_on: Date,
+				username: String,
+				cv: Object,
+				textcover: String,
+			}]
 		}]
 	}
 });

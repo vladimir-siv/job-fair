@@ -79,5 +79,26 @@ export default
 		if (consequent) return "No two consequent characters can be the same.";
 		
 		return "";
+	},
+	
+	parseCV(json: string)
+	{
+		let cv = JSON.parse(json);
+		
+		cv.birth = new Date(cv.birth);
+		
+		for (let i = 0; i < cv.work.length; ++i)
+		{
+			cv.work[i].from = new Date(cv.work[i].from);
+			cv.work[i].to = new Date(cv.work[i].to);
+		}
+		
+		for (let i = 0; i < cv.education.length; ++i)
+		{
+			cv.education[i].from = new Date(cv.education[i].from);
+			cv.education[i].to = new Date(cv.education[i].to);
+		}
+		
+		return cv;
 	}
 }

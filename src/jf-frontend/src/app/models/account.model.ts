@@ -34,7 +34,15 @@ export interface IAccountInfo
 			position: string,
 			description: string,
 			deadline: Date
-			attachments: string[]
+			attachments: string[],
+			applications:
+			[{
+				on: Date,
+				username: string,
+				cv: any,
+				textcover: string,
+				filecover: string
+			}]
 		}[]
 	}
 }

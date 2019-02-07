@@ -19,4 +19,9 @@ export class CompanyService
 	{
 		this.http.post<IResponse>("/company/new-opening", form).subscribe(callback);
 	}
+	
+	public apply(form: FormData, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/company/apply", form).subscribe(callback);
+	}
 }
