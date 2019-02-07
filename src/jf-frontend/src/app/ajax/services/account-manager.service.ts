@@ -31,6 +31,11 @@ export class AccountManagerService
 		this.http.post<IResponse>("/account/password", { username: username, password: password, newpw: newpw }).subscribe(callback);
 	}
 	
+	public resync(callback: ((response: { info: IAccountInfo }) => void))
+	{
+		this.http.get<{ info: IAccountInfo }>("/account/resync").subscribe(callback);
+	}
+	
 	public accinfo(callback: ((response: { info: IAccountInfo }) => void))
 	{
 		this.http.get<{ info: IAccountInfo }>("/account/info").subscribe(callback);

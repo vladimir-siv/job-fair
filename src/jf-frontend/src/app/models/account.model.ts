@@ -37,11 +37,10 @@ export interface IAccountInfo
 			attachments: string[],
 			applications:
 			[{
-				on: Date,
+				_on: Date,
 				username: string,
 				cv: any,
-				textcover: string,
-				filecover: string
+				textcover: string
 			}]
 		}[]
 	}

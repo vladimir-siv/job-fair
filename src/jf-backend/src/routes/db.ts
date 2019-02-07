@@ -7,7 +7,7 @@ let router = express.Router();
 
 router.get("/users/:username", (req, res, next) =>
 {
-	user.findOne({ username: req.params.username }, (err, data) =>
+	user.findOne({ username: req.params.username }, { "company.openings.applications": 0 }, (err, data) =>
 	{
 		if (err)
 		{
@@ -40,7 +40,9 @@ router.get("/users/:username", (req, res, next) =>
 						
 						for (let j = 0; j < attachments.length; ++j)
 						{
-							accinfo.company.openings[i].attachments.push(path.join("/storage/openings/", link, attachments[j]).replace(/\\/g, "/"));
+							let fpath = path.join("/storage/openings/", link, attachments[j]);
+							if (fs.lstatSync(path.join(__dirname, "../../storage/users", link, attachments[j])).isFile())
+								accinfo.company.openings[i].attachments.push(fpath.replace(/\\/g, "/"));
 						}
 					}
 				}
@@ -142,7 +144,7 @@ router.post("/jobs", (req, res, next) =>
 					let opening = data[i].company.openings[j];
 				
 					if
-						(
+					(
 						opening.position.search(new RegExp(req.body.position, "i")) != -1
 						&&
 						(

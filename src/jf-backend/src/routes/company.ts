@@ -199,4 +199,50 @@ router.post("/apply", (req, res, next) =>
 	});
 });
 
+router.post("/cover-type", (req, res, next) =>
+{
+	if
+	(
+		Number.isNaN(req.body.opening)
+		||
+		Number.isNaN(req.body.index)
+		||
+		!req.session
+		||
+		!req.session.user
+		||
+		!req.session.user.company
+		||
+		!req.session.user.company.openings
+		||
+		!req.session.user.company.openings[req.body.opening]
+		||
+		!req.session.user.company.openings[req.body.opening].applications
+		||
+		!req.session.user.company.openings[req.body.opening].applications[req.body.index]
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Could not fetch the type of the Cover Letter." });
+	}
+	
+	let fpath = path.join
+	(
+		__dirname,
+		"../../storage/users/",
+		req.session.user.username,
+		req.session.user.company.openings[req.body.opening].position
+			+ "-" +
+		new Date(req.session.user.company.openings[req.body.opening].started).valueOf(),
+		req.session.user.company.openings[req.body.opening].applications[req.body.index].username,
+		"cover.pdf"
+	);
+	
+	let type: string;
+	
+	if (fs.existsSync(fpath)) type = "file";
+	else type = "text";
+	
+	res.status(200).json({ result: "success", message: type });
+});
+
 export default router;

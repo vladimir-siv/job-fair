@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { InjectionContext } from "../DependencyInjection/injection-context.service";
 import { IAccountInfo } from "../models/account.model";
 import { DatabaseManagerService } from "../ajax/services/database-manager.service";
+import { AccountManagerService } from "../ajax/services/account-manager.service";
 import { CompanyService } from "../ajax/services/company.service";
 
 @Component
@@ -18,6 +19,7 @@ export class OpeningPageComponent implements OnInit
 		private route: ActivatedRoute,
 		private context: InjectionContext,
 		private db: DatabaseManagerService,
+		private account: AccountManagerService,
 		private company: CompanyService
 	) { }
 	
@@ -34,7 +36,9 @@ export class OpeningPageComponent implements OnInit
 	
 	ngOnInit()
 	{
-		this.context.app.accinfo.fetch(value => this.accinfo = value);
+		// it is probably a good idea to resync with context.app._accinfo, but who cares
+		this.account.resync(response => this.accinfo = response.info);
+		//this.context.app.accinfo.fetch(value => this.accinfo = value);
 		
 		this.route.paramMap.subscribe(params =>
 		{
@@ -54,8 +58,19 @@ export class OpeningPageComponent implements OnInit
 		});
 	}
 	
+	deadlineReached()
+	{
+		return Date.now() > new Date(this.data.company.openings[this.opening].deadline).valueOf();
+	}
+	
 	fill()
 	{
+		if (!this.accinfo.person.student.cv)
+		{
+			this.context.app.showPromptAlert("danger", "You do not have a CV set.");
+			return;
+		}
+		
 		this.cv = this.accinfo.person.student.cv;
 	}
 	

@@ -24,4 +24,9 @@ export class CompanyService
 	{
 		this.http.post<IResponse>("/company/apply", form).subscribe(callback);
 	}
+	
+	public covertype(opening: number, index: number, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/company/cover-type", { opening: opening, index: index }).subscribe(callback);
+	}
 }

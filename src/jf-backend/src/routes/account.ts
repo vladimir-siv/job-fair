@@ -369,6 +369,35 @@ router.post("/password", (req, res, next) =>
 	});
 });
 
+router.get("/resync", (req, res, next) =>
+{
+	if (!req.session || !req.session.user)
+	{
+		return res.status(200).json({ info: undefined });
+	}
+	
+	user.findOne({ username: req.session.user.username }, (err, data) =>
+	{
+		// won't ever happen
+		if (!req.session) return;
+		
+		if (err)
+		{
+			console.log("Error finding username: \"" + req.body.username + "\"");
+			return next(err);
+		}
+		
+		if (!data)
+		{
+			return res.status(200).json({ info: undefined });
+		}
+		
+		req.session.user = data;
+		req.session.user.password = "";
+		res.status(200).json({ info: data });
+	});
+});
+
 router.get("/info", (req, res, next) =>
 {
 	res.status(200).json({ info: req.session ? req.session.user : undefined });
