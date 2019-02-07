@@ -199,6 +199,55 @@ router.post("/apply", (req, res, next) =>
 	});
 });
 
+router.post("/applications", (req, res, next) =>
+{
+	if
+	(
+		!req.body.company
+		||
+		Number.isNaN(req.body.opening)
+		||
+		!req.session
+		||
+		!req.session.user
+		||
+		!req.session.user.person
+		||
+		!req.session.user.person.student
+	)
+	{
+		return res.status(200).json({ applications: undefined });
+	}
+	
+	user.findOne
+	(
+		{
+			username: req.body.company,
+			"company.openings.applications.username": req.session.user.username
+		},
+		{
+			"company.openings.applications": 1
+		},
+		(err, data) =>
+		{
+			if (err)
+			{
+				console.log("Could not do the search");
+				return next(err);
+			}
+			
+			let applications: any = undefined;
+			
+			if (data)
+			{
+				applications = data.toJSON().company.openings[req.body.opening].applications;
+			}
+			
+			res.status(200).json({ applications: applications });
+		}
+	);
+});
+
 router.post("/cover-type", (req, res, next) =>
 {
 	if
@@ -243,6 +292,64 @@ router.post("/cover-type", (req, res, next) =>
 	else type = "text";
 	
 	res.status(200).json({ result: "success", message: type });
+});
+
+router.post("/hire", (req, res, next) =>
+{
+	if (!req.session || !req.session.user || !req.session.user.company)
+	{
+		return res.status(200).json({ result: "danger", message: "Could not complete the hiring." });
+	}
+	
+	if
+	(
+		Number.isNaN(req.body.opening)
+		||
+		Number.isNaN(req.body.index)
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Invalid parameters." });
+	}
+	
+	user.findOne({ username: req.session.user.username }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find user");
+			return next(err);
+		}
+		
+		// @ts-ignore
+		if (!data || !data.company || !data.company.openings || !data.company.openings[req.body.opening] || !data.company.openings[req.body.opening].applications || !data.company.openings[req.body.opening].applications[req.body.index])
+		{
+			return res.status(200).json({ result: "danger", message: "Could not complete the hiring." });
+		}
+		
+		// @ts-ignore
+		let application = data.company.openings[req.body.opening].applications[req.body.index];
+		
+		// @ts-ignore
+		if (new Date(application._on).valueOf() > new Date(data.company.openings[req.body.opening].deadline).valueOf())
+		{
+			return res.status(200).json({ result: "danger", message: "Selected user is already hired!" });
+		}
+		
+		application._on = new Date(Date.now());
+		
+		// @ts-ignore
+		user.updateOne({ username: req.session.user.username }, data, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update hiring");
+				return next(err);
+			}
+			
+			// @ts-ignore
+			req.session.user.company.openings[req.body.opening].applications[req.body.index] = application;
+			res.status(200).json({ result: "success", message: "Successfully hired the user." });
+		});
+	});
 });
 
 export default router;

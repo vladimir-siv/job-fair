@@ -387,7 +387,14 @@
 		</div>
 		
 		<ng-container *ngIf="deadlineReached()">
-			
+			<div class="mx-auto mb-4 w-50">
+				<ng-container *ngIf="!hired; else __else_1">
+					<button type="button" class="btn btn-primary btn-sm btn-block" (click)="hire()">Hire</button>
+				</ng-container>
+				<ng-template #__else_1>
+					<button type="button" class="btn btn-success btn-sm btn-block" disabled>Hired!</button>
+				</ng-template>
+			</div>
 		</ng-container>
 	</ng-container>
 </div>

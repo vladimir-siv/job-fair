@@ -25,8 +25,18 @@ export class CompanyService
 		this.http.post<IResponse>("/company/apply", form).subscribe(callback);
 	}
 	
+	public applications(company: string, opening: number, callback: ((response: { applications: any }) => void))
+	{
+		this.http.post<{ applications: any }>("/company/applications", { company: company, opening: opening }).subscribe(callback);
+	}
+	
 	public covertype(opening: number, index: number, callback: ((response: IResponse) => void))
 	{
 		this.http.post<IResponse>("/company/cover-type", { opening: opening, index: index }).subscribe(callback);
+	}
+	
+	public hire(opening: number, index: number, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/company/hire", { opening: opening, index: index }).subscribe(callback);
 	}
 }

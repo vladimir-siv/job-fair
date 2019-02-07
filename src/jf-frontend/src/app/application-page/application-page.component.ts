@@ -30,9 +30,11 @@ export class ApplicationPageComponent implements OnInit
 	private opening: number = 0;
 	private index: number = 0;
 	
-	private cvbarrier = false;
+	private databarrier = false;
 	private cv = this.context.newappform;
 	private covertype = "";
+	
+	private hired = false;
 	
 	ngOnInit()
 	{
@@ -40,7 +42,7 @@ export class ApplicationPageComponent implements OnInit
 		this.account.resync(response =>
 		{
 			this.accinfo = response.info;
-			this.signalCv();
+			this.signaldata();
 		});
 		
 		this.route.paramMap.subscribe(params =>
@@ -51,7 +53,7 @@ export class ApplicationPageComponent implements OnInit
 			let index = params.get("index");
 			if (index != null) this.index = parseInt(index);
 			
-			this.signalCv();
+			this.signaldata();
 			
 			this.company.covertype(this.opening, this.index, response =>
 			{
@@ -63,19 +65,33 @@ export class ApplicationPageComponent implements OnInit
 		});
 	}
 	
-	signalCv()
+	signaldata()
 	{
-		if (!this.cvbarrier)
+		if (!this.databarrier)
 		{
-			this.cvbarrier = true;
+			this.databarrier = true;
 			return;
 		}
 		
 		this.cv = this.accinfo.company.openings[this.opening].applications[this.index].cv;
+		this.hired = new Date(this.accinfo.company.openings[this.opening].applications[this.index]._on).valueOf() > new Date(this.accinfo.company.openings[this.opening].deadline).valueOf();
 	}
 	
 	deadlineReached()
 	{
 		return Date.now() > new Date(this.accinfo.company.openings[this.opening].deadline).valueOf();
+	}
+	
+	hire()
+	{
+		this.company.hire(this.opening, this.index, response =>
+		{
+			if (response.result == "success")
+			{
+				this.hired = true;
+			}
+			
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
 	}
 }

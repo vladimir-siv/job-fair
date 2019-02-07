@@ -26,6 +26,7 @@ export class OpeningPageComponent implements OnInit
 	now() { return new Date(); }
 	parse(date: string) { return new Date(date); }
 	track(index: number, obj: any): any { return index; }
+	hired(application: any) { return new Date(application._on).valueOf() > new Date(this.data.company.openings[this.opening].deadline).valueOf() ? "yes" : "no"; }
 	
 	private accinfo: IAccountInfo;
 	private data: IAccountInfo;
@@ -34,10 +35,16 @@ export class OpeningPageComponent implements OnInit
 	private cv = this.context.newappform;
 	private textcover: string = "";
 	
+	private applicationsbarrier = false;
+	
 	ngOnInit()
 	{
 		// it is probably a good idea to resync with context.app._accinfo, but who cares
-		this.account.resync(response => this.accinfo = response.info);
+		this.account.resync(response =>
+		{
+			this.accinfo = response.info;
+			this.tryfetchapplications();
+		});
 		//this.context.app.accinfo.fetch(value => this.accinfo = value);
 		
 		this.route.paramMap.subscribe(params =>
@@ -53,8 +60,26 @@ export class OpeningPageComponent implements OnInit
 					this.opening = parseInt(opening);
 				}
 				
-				this.db.userinfo(company, response => this.data = response.info);
+				this.db.userinfo(company, response =>
+				{
+					this.data = response.info;
+					this.tryfetchapplications();
+				});
 			}
+		});
+	}
+	
+	tryfetchapplications()
+	{
+		if (!this.applicationsbarrier)
+		{
+			this.applicationsbarrier = true;
+			return;
+		}
+		
+		this.company.applications(this.data.username, this.opening, response =>
+		{
+			this.data.company.openings[this.opening].applications = response.applications;
 		});
 	}
 	
