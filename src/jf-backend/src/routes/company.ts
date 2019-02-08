@@ -326,6 +326,12 @@ router.post("/hire", (req, res, next) =>
 		}
 		
 		// @ts-ignore
+		if (Date.now() < new Date(data.company.openings[req.body.opening].deadline).valueOf())
+		{
+			return res.status(200).json({ result: "danger", message: "Cannot hire while opening deadline still not reached!" });
+		}
+		
+		// @ts-ignore
 		let application = data.company.openings[req.body.opening].applications[req.body.index];
 		
 		// @ts-ignore
@@ -349,6 +355,132 @@ router.post("/hire", (req, res, next) =>
 			req.session.user.company.openings[req.body.opening].applications[req.body.index] = application;
 			res.status(200).json({ result: "success", message: "Successfully hired the user." });
 		});
+	});
+});
+
+router.post("/rate", (req, res, next) =>
+{
+	if (!req.session || !req.session.user || !req.session.user.person || !req.session.user.person.student || !req.body.company || Number.isNaN(req.body.rating))
+	{
+		return res.status(200).json({ result: "danger", message: "Could not apply rating." });
+	}
+	
+	user.findOne({ username: req.body.company }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find user");
+			return next(err);
+		}
+		
+		// @ts-ignore
+		if (!data || !data.company)
+		{
+			return res.status(200).json({ result: "danger", message: "Could not apply rating." });
+		}
+		
+		// @ts-ignore
+		if (!data.company.ratings)
+		{
+			// @ts-ignore
+			data.company.ratings = [];
+		}
+		
+		// @ts-ignore
+		for (let i = 0; i < data.company.ratings.length; ++i)
+		{
+			// @ts-ignore
+			if (data.company.ratings[i].username == req.session.user.username)
+			{
+				return res.status(200).json({ result: "danger", message: "You have already rated this company!" });
+			}
+		}
+		
+		let worked1month = false;
+		
+		// @ts-ignore
+		if (data.company.openings)
+		{
+			// @ts-ignore
+			for (let i = 0; !worked1month && i < data.company.openings.length; ++i)
+			{
+				// @ts-ignore
+				if (data.company.openings[i].applications)
+				{
+					// @ts-ignore
+					let deadline = new Date(data.company.openings[i].deadline);
+					
+					// @ts-ignore
+					for (let j = 0; !worked1month && j < data.company.openings[i].applications.length; ++j)
+					{
+						// @ts-ignore
+						let _on = new Date(data.company.openings[i].applications[j]._on);
+						
+						if (_on.valueOf() > deadline.valueOf())
+						{
+							worked1month = Date.now() - _on.valueOf() > 30 * 24 * 60 * 60 * 1000;
+						}
+					}
+				}
+			}
+		}
+		
+		if (!worked1month)
+		{
+			return res.status(200).json({ result: "danger", message: "You must work for at least 1 month (30 days) to be able to rate!" });
+		}
+		
+		let rating = req.body.rating;
+		if (rating > 10) rating = 10;
+		if (rating < 0) rating = 0;
+		
+		// @ts-ignore
+		data.company.ratings.push({ username: req.session.user.username, rating: rating });
+		
+		user.updateOne({ username: req.body.company }, data, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update rating");
+				return next(err);
+			}
+			
+			res.status(200).json({ result: "success", message: "Successfully rated the company!" });
+		});
+	});
+});
+
+router.post("/fetch-rating", (req, res, next) =>
+{
+	if (!req.session || !req.session.user || !req.session.user.person || !req.session.user.person.student || !req.body.company)
+	{
+		return res.status(200).json({ rating: -1 });
+	}
+	
+	user.findOne({ username: req.body.company, "company.ratings.username": req.session.user.username }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find user");
+			return next(err);
+		}
+		
+		// @ts-ignore
+		if (!data || !data.company || !data.company.ratings)
+		{
+			return res.status(200).json({ rating: -1 });
+		}
+		
+		// @ts-ignore
+		for (let i = 0; i < data.company.ratings.length; ++i)
+		{
+			// @ts-ignore
+			if (data.company.ratings[i].username == req.session.user.username)
+			{
+				// @ts-ignore
+				return res.status(200).json({ rating: data.company.ratings[i].rating });
+			}
+		}
 	});
 });
 

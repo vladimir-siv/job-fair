@@ -39,4 +39,14 @@ export class CompanyService
 	{
 		this.http.post<IResponse>("/company/hire", { opening: opening, index: index }).subscribe(callback);
 	}
+	
+	public rate(company: string, rating: number, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/company/rate", { company: company, rating: rating }).subscribe(callback);
+	}
+	
+	public fetchrating(company: string, callback: ((response: { rating: number }) => void))
+	{
+		this.http.post<{ rating: number }>("/company/fetch-rating", { company: company }).subscribe(callback);
+	}
 }

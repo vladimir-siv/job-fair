@@ -25,4 +25,9 @@ export class HomePageComponent implements OnInit
 			this.context.app.showPromptAlert(response.result, response.message);
 		});
 	}
+	
+	show(value: number)
+	{
+		alert(value);
+	}
 }

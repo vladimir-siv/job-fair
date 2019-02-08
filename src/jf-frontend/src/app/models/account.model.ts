@@ -26,6 +26,11 @@ export interface IAccountInfo
 		web: string,
 		sector: string,
 		speciality: string,
+		ratings:
+		{
+			username: string,
+			rating: number
+		}[],
 		openings:
 		{
 			started: Date,

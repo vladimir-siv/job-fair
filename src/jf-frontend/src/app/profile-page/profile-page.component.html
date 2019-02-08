@@ -76,6 +76,14 @@
 					<th scope="row">Speciality:</th>
 					<td>{{ data.company.speciality }}</td>
 				</tr>
+				<tr>
+					<th scope="row">Rating:</th>
+					<td><rating #rating mode="insensitive"></rating></td>
+				</tr>
+				<tr *ngIf="accinfo && accinfo.person && accinfo.person.student">
+					<th scope="row">Rate:</th>
+					<td><rating #rate (click)="applyrate(rate.value)"></rating></td>
+				</tr>
 			</ng-container>
 		</tbody>
 	</table>

@@ -28,22 +28,39 @@ let user = new mongoose.Schema
 		web: String,
 		sector: String,
 		speciality: String,
-		openings:
-		[{
-			started: { type: Date, default: Date.now },
-			job: Boolean,
-			internship: Boolean,
-			position: String,
-			description: String,
-			deadline: Date,
-			applications:
+		ratings:
+		{
+			type:
 			[{
-				_on: Date,
 				username: String,
-				cv: Object,
-				textcover: String,
-			}]
-		}]
+				rating: Number
+			}],
+			default: undefined
+		},
+		openings:
+		{
+			type:
+			[{
+				started: { type: Date, default: Date.now },
+				job: Boolean,
+				internship: Boolean,
+				position: String,
+				description: String,
+				deadline: Date,
+				applications:
+				{
+					type:
+					[{
+						_on: Date,
+						username: String,
+						cv: Object,
+						textcover: String,
+					}],
+					default: undefined
+				}
+			}],
+			default: undefined
+		}
 	}
 });
 

@@ -3,3 +3,11 @@
 <input-file #attachment accept="image/*" mode="multiple" btn-class="btn btn-info"></input-file>
 <br>
 <button type="button" class="btn btn-secondary" (click)="upload(attachment.files)">Upload</button>
+
+<br>
+
+<rating #rating1 (click)="show(rating1.value)"></rating>
+<br>
+<rating #rating2 mode="readonly" value="5.3"></rating>
+<br>
+<rating #rating3 value="2.3" (click)="show(rating3.value)"></rating>
