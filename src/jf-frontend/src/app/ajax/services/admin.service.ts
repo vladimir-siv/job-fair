@@ -19,4 +19,9 @@ export class AdminService
 	{
 		this.http.post<IResponse>("/admin/update-cv", { cv: enabled }).subscribe(callback);
 	}
+	
+	public fair(enabled: boolean, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/admin/update-fair", { fair: enabled }).subscribe(callback);
+	}
 }

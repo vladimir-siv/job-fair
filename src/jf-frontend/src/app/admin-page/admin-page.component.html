@@ -1,4 +1,18 @@
 <div class="container-fluid mt-5">
-	<button type="button" class="btn btn-success" (click)="cv(true);">Enable CV Editing</button>
-	<button type="button" class="btn btn-danger" (click)="cv(false);">Disable CV Editing</button>
+	<div class="card w-50 mx-auto my-2">
+		<h5 class="card-header">Enable/Disable CV Editing</h5>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary btn-sm btn-block" (click)="cv(true);">Enable CV Editing</button>
+			<br>
+			<button type="button" class="btn btn-secondary btn-sm btn-block" (click)="cv(false);">Disable CV Editing</button>
+		</div>
+	</div>
+	<div class="card w-50 mx-auto my-2">
+		<h5 class="card-header">Enable/Disable Fair Applications</h5>
+		<div class="card-body">
+			<button type="button" class="btn btn-primary btn-sm btn-block" (click)="fair(true);">Enable Fair Applications</button>
+			<br>
+			<button type="button" class="btn btn-secondary btn-sm btn-block" (click)="fair(false);">Disable Fair Applications</button>
+		</div>
+	</div>
 </div>

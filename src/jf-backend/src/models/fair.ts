@@ -2,11 +2,9 @@ import mongoose from "mongoose";
 
 let fair = new mongoose.Schema
 ({
-	fair: String,
-	startdate: Date,
-	enddate: Date,
-	starttime: Date,
-	endtime: Date,
+	name: String,
+	start: Date,
+	end: Date,
 	place: String,
 	about: String,
 	packages:

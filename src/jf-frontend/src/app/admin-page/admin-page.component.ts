@@ -25,4 +25,12 @@ export class AdminPageComponent implements OnInit
 			this.context.app.showPromptAlert(response.result, response.message);
 		});
 	}
+	
+	fair(enabled: boolean)
+	{
+		this.admin.fair(enabled, response =>
+		{
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
+	}
 }
