@@ -13,7 +13,8 @@ export class InjectionContext
 		"Telecommunication",
 		"Energetics",
 		"Construction & Architecture",
-		"Mechanics"
+		"Mechanics",
+		"Food & Restaurants"
 	];
 	
 	private _app: AppComponent;

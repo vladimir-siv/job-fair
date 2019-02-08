@@ -2,15 +2,19 @@ import express from "express";
 import fileupload from "express-fileupload";
 import path from "path";
 import crypto from "crypto";
+import env from "../models/env";
 import user from "../models/user";
+import loc from "../models/loc";
 
 let router = express.Router();
 
+// @test
 router.get("/", (req, res, next) =>
 {
 	res.send("respond with a resource");
 });
 
+// @test
 router.post("/upload", async (req, res, next) =>
 {
 	let code: number = 200;
@@ -36,21 +40,81 @@ router.post("/upload", async (req, res, next) =>
 	return res.status(code).json(response);
 });
 
-router.post("/create-admin", (req, res, next) =>
+// @init
+router.get("/init-system", (req, res, next) =>
 {
-	user.findOne({ username: req.body.username }, (err: any, data: Document) =>
-	{
-		if (err) return next(err);
-		if (data) return res.status(200).json({ result: "danger", message: "Username already in use." });
-		
-		req.body.password = crypto.createHash("md5").update(req.body.password).digest("hex");
-		
-		user.create(req.body, (err: any, data: Document[]) =>
+	return res.status(200).send("Already done.");
+	
+	let envs: any =
+	[
 		{
-			if (err) return next(err);
-			res.status(200).json({ result: "success", message: "Successfully created admin." });
-		});
-	});
+			active: true,
+			cv: false,
+			fair: false
+		}
+	];
+	let admins: any =
+	[
+		{
+			username: "vladimir-siv",
+			password: crypto.createHash("md5").update("vladimir-siv").digest("hex"),
+			person:
+			{
+				firstname: "Vladimir",
+				lastname: "Sivčev",
+				phone: "+381 69/42-41-506",
+				email: "vladimir.sivcev@gmail.com"
+			}
+		}
+	];
+	let locs: any =
+	[
+		{
+			place: "Mesto",
+			location:
+			[
+				{ name: "Sala 1" },
+				{ name: "Sala 2" },
+				{ name: "Sala 3" },
+				{ name: "Sala 4" },
+			]
+		},
+		{
+			place: "ETF Beograd",
+			location:
+			[
+				{ name: "Amfiteatar 56" },
+				{ name: "Amfiteatar 65" },
+				{ name: "Laboratorija 60" },
+				{ name: "Svecana sala - Arhitektura" },
+				{ name: "Ucionica 310" },
+				{ name: "Ucionica 311" }
+			]
+		},
+		{
+			place: "Mesto2",
+			location:
+			[
+				{ name: "Sala 5" },
+				{ name: "Sala 6" },
+				{ name: "Sala 7" },
+				{ name: "Sala 8" },
+				{ name: "Sala 9" },
+			]
+		}
+	];
+	
+	let done = (info: any) =>
+	{
+		if (!envs && !admins && !locs)
+		{
+			res.status(200).send("success");
+		}
+	}
+	
+	env.create(envs, (err: any, data: Document[]) => done(envs = undefined));
+	user.create(admins, (err: any, data: Document[]) => done(admins = undefined));
+	loc.create(locs, (err: any, data: Document[]) => done(locs = undefined));
 });
 
 export default router;

@@ -1,5 +1,5 @@
 import express from "express";
-import environment from "../models/environment";
+import env from "../models/env";
 import sharedlib from "../shared/library";
 
 let router = express.Router();
@@ -10,9 +10,11 @@ router.post("/create-env", (req, res, next) =>
 	
 	if
 	(
-		bodyKeys.length != 1 && (bodyKeys.length != 2 || !req.body.active)
+		bodyKeys.length != 2 && (bodyKeys.length != 3 || req.body.active === undefined)
 		||
-		!req.body.cv
+		req.body.cv === undefined
+		||
+		req.body.fair === undefined
 	)
 	{
 		return res.status(200).json({ result: "danger", message: "Invalid environment format." });
@@ -20,7 +22,7 @@ router.post("/create-env", (req, res, next) =>
 	
 	let create = () =>
 	{
-		environment.create(req.body, (err: any, data: Document[]) =>
+		env.create(req.body, (err: any, data: Document[]) =>
 		{
 			if (err)
 			{
@@ -34,7 +36,7 @@ router.post("/create-env", (req, res, next) =>
 	
 	if (req.body.active)
 	{
-		environment.findOne({ active: true }, (err, data) =>
+		env.findOne({ active: true }, (err, data) =>
 		{
 			if (err)
 			{
@@ -46,7 +48,7 @@ router.post("/create-env", (req, res, next) =>
 			{
 				// @ts-ignore
 				data.active = false;
-				environment.updateOne({ active: true }, data, (err, raw) =>
+				env.updateOne({ active: true }, data, (err, raw) =>
 				{
 					if (err)
 					{
@@ -70,7 +72,7 @@ router.post("/update-cv", (req, res, next) =>
 		return res.status(200).json({ result: "danger", message: "Please, specify the CV field." });
 	}
 	
-	environment.findOne({ active: true }, (err, data) =>
+	env.findOne({ active: true }, (err, data) =>
 	{
 		if (err)
 		{
@@ -82,7 +84,7 @@ router.post("/update-cv", (req, res, next) =>
 		{
 			// @ts-ignore
 			data.cv = req.body.cv;
-			environment.updateOne({ active: true }, data, (err, raw) =>
+			env.updateOne({ active: true }, data, (err, raw) =>
 			{
 				if (err)
 				{
@@ -91,6 +93,40 @@ router.post("/update-cv", (req, res, next) =>
 				}
 				
 				res.status(200).json({ result: "success", message: "CV editing is now " + (req.body.cv ? "enabled" : "disabled") + "." });
+			});
+		}
+		else res.status(200).json({ result: "danger", message: "Could not find active environment." });
+	});
+});
+
+router.post("/update-fair", (req, res, next) =>
+{
+	if (!sharedlib.contains(Object.keys(req.body), "fair"))
+	{
+		return res.status(200).json({ result: "danger", message: "Please, specify the FAIR field." });
+	}
+	
+	env.findOne({ active: true }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find active environment");
+			return next(err);
+		}
+		
+		if (data)
+		{
+			// @ts-ignore
+			data.fair = req.body.fair;
+			env.updateOne({ active: true }, data, (err, raw) =>
+			{
+				if (err)
+				{
+					console.log("Could not update active environment");
+					return next(err);
+				}
+				
+				res.status(200).json({ result: "success", message: "Applying for Fair is now " + (req.body.fair ? "enabled" : "disabled") + "." });
 			});
 		}
 		else res.status(200).json({ result: "danger", message: "Could not find active environment." });

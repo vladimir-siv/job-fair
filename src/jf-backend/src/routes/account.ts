@@ -5,7 +5,7 @@ import crypto from "crypto";
 import imgsize from "image-size";
 import rimraf from "rimraf";
 import user from "../models/user";
-import environment from "../models/environment";
+import env from "../models/env";
 import sharedlib from "../shared/library";
 
 let router = express.Router();
@@ -415,7 +415,7 @@ router.post("/updatecv", (req, res, next) =>
 		return res.status(200).json({ result: "danger", message: "CV data not supplied." });
 	}
 	
-	environment.findOne({ active: true }, (err, data) =>
+	env.findOne({ active: true }, (err, data) =>
 	{
 		if (err)
 		{
