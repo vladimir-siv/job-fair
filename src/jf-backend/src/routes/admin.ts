@@ -215,6 +215,20 @@ router.post("/create-fair", (req, res, next) =>
 			}
 		}
 		
+		for (let i = 0; i < fairinfo.packages.length; ++i)
+		{
+			if (fairinfo.packages[i].videopromotion < 0) fairinfo.packages[i].videopromotion = 0;
+			if (fairinfo.packages[i].nolessons < 0) fairinfo.packages[i].nolessons = 0;
+			if (fairinfo.packages[i].noworkshops < 0) fairinfo.packages[i].noworkshops = 0;
+			if (fairinfo.packages[i].nopresentation < 0) fairinfo.packages[i].nopresentation = 0;
+			if (fairinfo.packages[i].price < 0) fairinfo.packages[i].price = 0;
+		}
+		
+		for (let i = 0; i < fairinfo.additional.length; ++i)
+		{
+			if (fairinfo.additional[i].price < 0) fairinfo.additional[i].price = 0;
+		}
+		
 		fair.create(fairinfo, async (err: any, data: Document[]) =>
 		{
 			if (err)
@@ -231,6 +245,78 @@ router.post("/create-fair", (req, res, next) =>
 				await uploads.files[i].mv(path.join(dir, "images", uploads.files[i].name));
 			
 			return res.status(200).json({ result: "success", message: "Successfully created new fair." });
+		});
+	});
+});
+
+router.post("/update-maxcompanies", (req, res, next) =>
+{
+	if
+		(
+		req.body.packageno == undefined
+		||
+		req.body.packageno < 0
+		||
+		req.body.maxcompanies == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs present at the current time." });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs present at the current time." });
+		}
+		
+		let currFair = data[0].toJSON();
+		
+		if (req.body.packageno >= currFair.packages.length)
+		{
+			return res.status(200).json({ result: "danger", message: "Invalid package." });
+		}
+		
+		if
+		(
+			currFair.packages[req.body.packageno].maxcompanies < 0
+			||
+			(
+				req.body.maxcompanies >= 0
+				&&
+				req.body.maxcompanies <= currFair.packages[req.body.packageno].maxcompanies
+			)
+		)
+		{
+			return res.status(200).json({ result: "danger", message: "The new value must be greater than the last one (negative numbers mean unlimited)." });
+		}
+		
+		currFair.packages[req.body.packageno].maxcompanies = req.body.maxcompanies;
+		
+		data[0].update(currFair, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update current fair");
+				return next(err);
+			}
+			
+			res.status(200).json({ result: "success", message: "Successfully changed the value of maxcompanies." });
 		});
 	});
 });

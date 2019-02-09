@@ -42,11 +42,11 @@
 						<div class="my-2">
 							<div *ngFor="let one of fairinfo.packages" class="mb-1">
 								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
-								<input type="number" class="form-control" placeholder="Video Promotion Length [min]" [(ngModel)]="one.videopromotion">
-								<input type="number" class="form-control" placeholder="Number of Lessons" [(ngModel)]="one.nolessons">
-								<input type="number" class="form-control" placeholder="Number of Workshops" [(ngModel)]="one.noworkshops">
-								<input type="number" class="form-control" placeholder="Number of Presentations" [(ngModel)]="one.nopresentation">
-								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+								<input type="number" min="0" class="form-control" placeholder="Video Promotion Length [min]" [(ngModel)]="one.videopromotion">
+								<input type="number" min="0" class="form-control" placeholder="Number of Lessons" [(ngModel)]="one.nolessons">
+								<input type="number" min="0" class="form-control" placeholder="Number of Workshops" [(ngModel)]="one.noworkshops">
+								<input type="number" min="0" class="form-control" placeholder="Number of Presentations" [(ngModel)]="one.nopresentation">
+								<input type="number" min="0" class="form-control" placeholder="Price" [(ngModel)]="one.price">
 								<input type="number" class="form-control" placeholder="Max Companies" [(ngModel)]="one.maxcompanies">
 								<div class="my-2">
 									<input *ngFor="let _one of one.content; index as i; trackBy: track" type="text" class="form-control" placeholder="Content" [(ngModel)]="one.content[i]">
@@ -66,7 +66,7 @@
 						<div class="my-2">
 							<div *ngFor="let one of fairinfo.additional" class="mb-1">
 								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
-								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+								<input type="number" min="0" class="form-control" placeholder="Price" [(ngModel)]="one.price">
 							</div>
 							<div class="input-group">
 								<button type="button" class="btn btn-primary btn-sm w-50" (click)="fairinfo.additional.push({ title: '', price: 0 })">+</button>

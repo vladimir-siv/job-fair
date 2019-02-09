@@ -20,6 +20,12 @@
 		<label class="form-control w-25">About:</label>
 		<label class="form-control w-75">{{ fairinfo.about }}</label>
 	</div>
+	<div class="input-group my-2">
+		<label class="form-control w-100">Locations:</label>
+		<div class="mx-auto" style="width: 90%;">
+			<label *ngFor="let one of fairinfo.locations" class="form-control w-100 mt-2 mb-0">{{ one.name }}</label>
+		</div>
+	</div>
 	<hr>
 	<div class="input-group my-2">
 		<div class="input-group-prepend">

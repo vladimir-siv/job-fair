@@ -207,7 +207,7 @@ router.get("/current-fair", (req, res, next) =>
 		}
 		
 		// @ts-ignore
-		loc.find({ place: data[0].place }, (err, locs) =>
+		loc.findOne({ place: data[0].place }, (err, locs) =>
 		{
 			if (err)
 			{
