@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { InjectionContext } from "../DependencyInjection/injection-context.service";
-import { DevService } from "../ajax/services/dev.service";
+import { DatabaseManagerService } from "../ajax/services/database-manager.service";
 
 @Component
 ({
@@ -13,21 +13,21 @@ export class HomePageComponent implements OnInit
 	public constructor
 	(
 		private context: InjectionContext,
-		private dev: DevService
+		private db: DatabaseManagerService
 	) { }
 	
-	ngOnInit() { }
+	private cv: string = "unknown";
+	private fair: string = "unknown";
 	
-	upload(files: FileList)
+	ngOnInit()
 	{
-		this.dev.upload("/dev/upload", files, response =>
+		this.db.env(response =>
 		{
-			this.context.app.showPromptAlert(response.result, response.message);
+			if (response.env)
+			{
+				this.cv = response.env.cv ? "enabled" : "disabled";
+				this.fair = response.env.fair ? "enabled" : "disabled";
+			}
 		});
-	}
-	
-	show(value: number)
-	{
-		alert(value);
 	}
 }

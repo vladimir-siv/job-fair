@@ -1,9 +1,24 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
+import env from "../models/env";
 import user from "../models/user";
 
 let router = express.Router();
+
+router.get("/env", (req, res, next) =>
+{
+	env.findOne({ active: true }, { active: 0 }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find active environment");
+			return next(err);
+		}
+		
+		res.status(200).json({ env: data ? data : undefined });
+	});
+});
 
 router.get("/users/:username", (req, res, next) =>
 {

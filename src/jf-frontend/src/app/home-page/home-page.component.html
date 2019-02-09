@@ -1,13 +1,13 @@
-<p> Home page </p>
-
-<input-file #attachment accept="image/*" mode="multiple" btn-class="btn btn-info"></input-file>
-<br>
-<button type="button" class="btn btn-secondary" (click)="upload(attachment.files)">Upload</button>
-
-<br>
-
-<rating #rating1 (click)="show(rating1.value)"></rating>
-<br>
-<rating #rating2 mode="readonly" value="5.3"></rating>
-<br>
-<rating #rating3 value="2.3" (click)="show(rating3.value)"></rating>
+<div class="container-fluid mt-5">
+	<div class="card mx-auto my-2">
+		<h5 class="card-header">News</h5>
+		<div class="card-body">
+			<div class="alert alert-primary pb-0" role="alert">
+				<p><b>CV</b> editing is currently <b>{{ cv }}</b>.</p>
+			</div>
+			<div class="alert alert-primary pb-0" role="alert">
+				<p>Applying for <b>Fairs</b> is currently <b>{{ fair }}</b>.</p>
+			</div>
+		</div>
+	</div>
+</div>

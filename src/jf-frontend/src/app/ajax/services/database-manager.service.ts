@@ -15,6 +15,11 @@ export class DatabaseManagerService
 		private http: HttpClient
 	) { }
 	
+	public env(callback: ((response: { env: { cv: boolean, fair: boolean } }) => void))
+	{
+		this.http.get<{ env: { cv: boolean, fair: boolean } }>("/db/env").subscribe(callback);
+	}
+	
 	public userinfo(username: string, callback: ((response: { info: IAccountInfo }) => void))
 	{
 		this.http.get<{ info: IAccountInfo }>("/db/users/" + username).subscribe(callback);
