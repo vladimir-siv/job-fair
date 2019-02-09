@@ -46,6 +46,17 @@ export class FairApplicationDetailsPopupFeedComponent extends PopupFeed
 			if (this.additional[i] == "active")
 				additional.push(i);
 		
-		alert("OK hoss, wait for this to get implemented...");
+		this.db.applyforfair
+		(
+			{
+				company: this.accinfo.username,
+				package: this.package,
+				additional: additional
+			},
+			response =>
+			{
+				this.prompts = [{ type: response.result, content: response.message }];
+			}
+		);
 	}
 }

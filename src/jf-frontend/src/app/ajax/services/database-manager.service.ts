@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
+import { IResponse } from "../ajax.types";
 import { IAccountInfo } from "../../models/account.model";
 import { IFairInfo } from "../../models/fair.model";
 
@@ -39,5 +40,10 @@ export class DatabaseManagerService
 	public currentfair(callback: ((response: { fair: IFairInfo }) => void))
 	{
 		this.http.get<{ fair: IFairInfo }>("/db/current-fair").subscribe(callback);
+	}
+	
+	public applyforfair(application: { company: string, package: number, additional: number[] }, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/db/apply-for-fair", application).subscribe(callback);
 	}
 }

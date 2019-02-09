@@ -230,4 +230,78 @@ router.get("/current-fair", (req, res, next) =>
 	});
 });
 
+router.post("/apply-for-fair", (req, res, next) =>
+{
+	if
+	(
+		req.body.company == undefined
+		||
+		req.body.package == undefined
+		||
+		req.body.additional == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ result: "danger", message: "Could not apply for the fair. The fair may be unavailable at the current time." });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ result: "danger", message: "Could not apply for the fair. The fair may be unavailable at the current time." });
+		}
+		
+		let currFair = data[0].toJSON();
+		
+		if (currFair.applications == undefined)
+		{
+			currFair.applications = [];
+		}
+		
+		for (let i = 0; i < currFair.applications.length; ++i)
+		{
+			if (currFair.applications[i].company == req.body.company && currFair.applications[i].accepted != false)
+			{
+				return res.status(200).json({ result: "danger", message: "You already have an application to this fair." });
+			}
+		}
+		
+		currFair.applications.push
+		({
+			company: req.body.company,
+			package: req.body.package,
+			additional: req.body.additional,
+			accepted: undefined,
+			comment: "",
+			events: []
+		});
+		
+		data[0].update(currFair, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update fair");
+				return next(err);
+			}
+			
+			return res.status(200).json({ result: "success", message: "Successfully applied for the fair." });
+		});
+	});
+});
+
 export default router;

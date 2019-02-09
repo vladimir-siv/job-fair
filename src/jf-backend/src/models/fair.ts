@@ -30,6 +30,26 @@ let fair = new mongoose.Schema
 			price: Number
 		}],
 		default: undefined
+	},
+	// locations are optionally embedded (check GET/db/current-fair)
+	applications:
+	{
+		type:
+		[{
+			company: String,
+			package: Number,
+			additional: [Number],
+			accepted: Boolean,
+			comment: String,
+			events:
+			[{
+				eventtype: String,
+				location: String,
+				start: Date,
+				end: Date
+			}]
+		}],
+		default: []
 	}
 });
 
