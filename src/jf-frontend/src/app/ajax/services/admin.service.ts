@@ -34,4 +34,9 @@ export class AdminService
 	{
 		this.http.post<IResponse>("/admin/create-fair", form).subscribe(callback);
 	}
+	
+	public updatemaxcompanies(packageno: number, maxcompanies: number, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/admin/update-maxcompanies", { packageno: packageno, maxcompanies: maxcompanies }).subscribe(callback);
+	}
 }

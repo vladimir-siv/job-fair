@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { InjectionContext } from "../DependencyInjection/injection-context.service";
 import { AdminService } from "../ajax/services/admin.service";
-import { FairInfo } from "../models/fair.model";
+import { DatabaseManagerService } from "../ajax/services/database-manager.service";
+import { FairInfo, IFairInfo } from "../models/fair.model";
 import { HttpClient } from "@angular/common/http";
 
 @Component
@@ -16,6 +17,7 @@ export class AdminPageComponent implements OnInit
 	(
 		private context: InjectionContext,
 		private admin: AdminService,
+		private db: DatabaseManagerService,
 		private http: HttpClient
 	) { }
 	
@@ -31,6 +33,7 @@ export class AdminPageComponent implements OnInit
 		return date;
 	}
 	
+	private current: IFairInfo;
 	private fairinfo: FairInfo = new FairInfo();
 	private locations: { place: string }[] = [];
 	
@@ -40,6 +43,13 @@ export class AdminPageComponent implements OnInit
 		{
 			this.locations = response.locations;
 		});
+		
+		this.reloadcurrentfair();
+	}
+	
+	reloadcurrentfair()
+	{
+		this.db.currentfair(response => this.current = response.fair);
 	}
 	
 	load1()
@@ -130,6 +140,19 @@ export class AdminPageComponent implements OnInit
 		form.append("fairinfo", JSON.stringify(this.fairinfo));
 		
 		this.admin.createfair(form, response =>
+		{
+			if (response.result == "success")
+			{
+				this.reloadcurrentfair();
+			}
+			
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
+	}
+	
+	update(i: number)
+	{
+		this.admin.updatemaxcompanies(i, this.current.packages[i].maxcompanies, response =>
 		{
 			this.context.app.showPromptAlert(response.result, response.message);
 		});
