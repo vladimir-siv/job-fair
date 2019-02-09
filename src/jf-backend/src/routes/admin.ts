@@ -1,5 +1,6 @@
 import express from "express";
 import env from "../models/env";
+import loc from "../models/loc";
 import sharedlib from "../shared/library";
 
 let router = express.Router();
@@ -130,6 +131,20 @@ router.post("/update-fair", (req, res, next) =>
 			});
 		}
 		else res.status(200).json({ result: "danger", message: "Could not find active environment." });
+	});
+});
+
+router.get("/fair-locations", (req, res, next) =>
+{
+	loc.find({}, { place: 1 }, (err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find locations");
+			next(err);
+		}
+		
+		res.status(200).json({ locations: data ? data : undefined });
 	});
 });
 

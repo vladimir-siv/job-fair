@@ -1,4 +1,152 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<owl-date-time #start [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
+<owl-date-time #end [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
+<owl-date-time #startcheck [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
+<owl-date-time #endcheck [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
+
 <div class="container-fluid mt-5">
+	<div class="card mx-auto my-2">
+		<h5 class="card-header">Create new fair</h5>
+		<div class="card-body">
+			<mat-horizontal-stepper [linear]="true">
+				
+				<mat-step label="Fair information">
+					<div class="container-fluid mb-4 w-100">
+						<input type="text" class="form-control" placeholder="Fair Name" [(ngModel)]="fairinfo.name">
+						<select class="form-control" placeholder="Fair Place" [(ngModel)]="fairinfo.place">
+							<option *ngFor="let one of locations" [ngValue]="one.place">{{ one.place }}</option>
+						</select>
+						<textarea class="form-control" style="resize: none;" rows="4" placeholder="About" [(ngModel)]="fairinfo.about"></textarea>
+						<hr>
+						<h4>Autoload data for this and next step:</h4>
+						<button type="button" class="btn btn-success btn-sm btn-block w-75 mx-auto" (click)="load1()">Autoload</button>
+					</div>
+					<div class="container-fluid">
+						<button type="button" class="btn btn-secondary btn-sm w-25" style="float: left;" mat-button matStepperPrevious disabled>&lt;- Back</button>
+						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
+					</div>
+				</mat-step>
+				
+				<mat-step label="Logo & Timings">
+					<div class="container-fluid mb-4">
+						<input-file #logo accept="image/*" mode="single" class="form-control" style="padding-top: 1px; padding-left: 3px;" btn-class="btn btn-info p-1" text="Attach logo"></input-file>
+						<input-file #images accept="image/*" mode="multiple" class="form-control" style="padding-top: 1px; padding-left: 3px;" btn-class="btn btn-info p-1" text="Attach images"></input-file>
+						<input [owlDateTime]="start" [owlDateTimeTrigger]="start" class="form-control" placeholder="Start date" [(ngModel)]="fairinfo.start">
+						<input [owlDateTime]="end" [owlDateTimeTrigger]="end" class="form-control" placeholder="End date" [(ngModel)]="fairinfo.end">
+					</div>
+					<div class="container-fluid">
+						<button type="button" class="btn btn-secondary btn-sm w-25" style="float: left;" mat-button matStepperPrevious>&lt;- Back</button>
+						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
+					</div>
+				</mat-step>
+				
+				<mat-step label="Packages">
+					<div class="container-fluid mb-4">
+						<div class="my-2">
+							<div *ngFor="let one of fairinfo.packages" class="mb-1">
+								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
+								<input type="number" class="form-control" placeholder="Video Promotion Length [min]" [(ngModel)]="one.videopromotion">
+								<input type="number" class="form-control" placeholder="Number of Lessons" [(ngModel)]="one.nolessons">
+								<input type="number" class="form-control" placeholder="Number of Workshops" [(ngModel)]="one.noworkshops">
+								<input type="number" class="form-control" placeholder="Number of Presentations" [(ngModel)]="one.nopresentation">
+								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+								<input type="number" class="form-control" placeholder="Max Companies" [(ngModel)]="one.maxcompanies">
+								<div class="my-2">
+									<input *ngFor="let _one of one.content; index as i; trackBy: track" type="text" class="form-control" placeholder="Content" [(ngModel)]="one.content[i]">
+									<div class="input-group my-1">
+										<div class="w-25"></div>
+										<button type="button" class="btn btn-primary btn-sm w-25" (click)="one.content.push('')">+</button>
+										<button type="button" class="btn btn-secondary btn-sm w-25" (click)="one.content.pop()">-</button>
+										<div class="w-25"></div>
+									</div>
+								</div>
+							</div>
+							<div class="input-group">
+								<button type="button" class="btn btn-primary btn-sm w-50" (click)="fairinfo.packages.push({ title: '', content: [], videopromotion: 0, nolessons: 0, noworkshops: 0, nopresentation: 0, price: 0, maxcompanies: 0 })">+</button>
+								<button type="button" class="btn btn-secondary btn-sm w-50" (click)="fairinfo.packages.pop()">-</button>
+							</div>
+						</div>
+						<div class="my-2">
+							<div *ngFor="let one of fairinfo.additional" class="mb-1">
+								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
+								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+							</div>
+							<div class="input-group">
+								<button type="button" class="btn btn-primary btn-sm w-50" (click)="fairinfo.additional.push({ title: '', price: 0 })">+</button>
+								<button type="button" class="btn btn-secondary btn-sm w-50" (click)="fairinfo.additional.pop()">-</button>
+							</div>
+						</div>
+						<hr>
+						<h4>Autoload data for this step:</h4>
+						<button type="button" class="btn btn-success btn-sm btn-block w-75 mx-auto" (click)="load2()">Autoload</button>
+					</div>
+					<div class="container-fluid">
+						<button type="button" class="btn btn-secondary btn-sm w-25" style="float: left;" mat-button matStepperPrevious>&lt;- Back</button>
+						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
+					</div>
+				</mat-step>
+				
+				<mat-step label="Overview">
+					<div class="container-fluid mb-4">
+						<div class="my-2">
+							<input type="text" class="form-control" placeholder="Fair Name" [(ngModel)]="fairinfo.name">
+							<select class="form-control" placeholder="Fair Place" [(ngModel)]="fairinfo.place">
+								<option *ngFor="let one of locations" [ngValue]="one.place">{{ one.place }}</option>
+							</select>
+							<textarea class="form-control" style="resize: none;" rows="4" placeholder="About" [(ngModel)]="fairinfo.about"></textarea>
+						</div>
+						<div class="my-2">
+							<input [owlDateTime]="startcheck" [owlDateTimeTrigger]="startcheck" class="form-control" placeholder="Start date" [(ngModel)]="fairinfo.start">
+							<input [owlDateTime]="endcheck" [owlDateTimeTrigger]="endcheck" class="form-control" placeholder="End date" [(ngModel)]="fairinfo.end">
+						</div>
+						<div class="my-2">
+							<div *ngFor="let one of fairinfo.packages" class="mb-1">
+								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
+								<input type="number" class="form-control" placeholder="Video Promotion Length [min]" [(ngModel)]="one.videopromotion">
+								<input type="number" class="form-control" placeholder="Number of Lessons" [(ngModel)]="one.nolessons">
+								<input type="number" class="form-control" placeholder="Number of Workshops" [(ngModel)]="one.noworkshops">
+								<input type="number" class="form-control" placeholder="Number of Presentations" [(ngModel)]="one.nopresentation">
+								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+								<input type="number" class="form-control" placeholder="Max Companies" [(ngModel)]="one.maxcompanies">
+								<div class="my-2">
+									<input *ngFor="let _one of one.content; index as i; trackBy: track" type="text" class="form-control" placeholder="Content" [(ngModel)]="one.content[i]">
+									<div class="input-group my-1">
+										<div class="w-25"></div>
+										<button type="button" class="btn btn-primary btn-sm w-25" (click)="one.content.push('')">+</button>
+										<button type="button" class="btn btn-secondary btn-sm w-25" (click)="one.content.pop()">-</button>
+										<div class="w-25"></div>
+									</div>
+								</div>
+							</div>
+							<div class="input-group">
+								<button type="button" class="btn btn-primary btn-sm w-50" (click)="fairinfo.packages.push({ title: '', content: [], videopromotion: 0, nolessons: 0, noworkshops: 0, nopresentation: 0, price: 0, maxcompanies: 0 })">+</button>
+								<button type="button" class="btn btn-secondary btn-sm w-50" (click)="fairinfo.packages.pop()">-</button>
+							</div>
+						</div>
+						<div class="my-2">
+							<div *ngFor="let one of fairinfo.additional" class="mb-1">
+								<input type="text" class="form-control" placeholder="Title" [(ngModel)]="one.title">
+								<input type="number" class="form-control" placeholder="Price" [(ngModel)]="one.price">
+							</div>
+							<div class="input-group">
+								<button type="button" class="btn btn-primary btn-sm w-50" (click)="fairinfo.additional.push({ title: '', price: 0 })">+</button>
+								<button type="button" class="btn btn-secondary btn-sm w-50" (click)="fairinfo.additional.pop()">-</button>
+							</div>
+						</div>
+						<hr>
+						<h4>Create new fair:</h4>
+						<button type="button" class="btn btn-success btn-sm btn-block w-75 mx-auto" (click)="create(logo.files, images.files)">Create now!</button>
+					</div>
+					<div class="container-fluid">
+						<button type="button" class="btn btn-secondary btn-sm w-25" style="float: left;" mat-button matStepperPrevious>&lt;- Back</button>
+						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext disabled>Next -&gt;</button>
+					</div>
+				</mat-step>
+				
+			</mat-horizontal-stepper>
+		</div>
+	</div>
+	
 	<div class="card w-50 mx-auto my-2">
 		<h5 class="card-header">Enable/Disable CV Editing</h5>
 		<div class="card-body">

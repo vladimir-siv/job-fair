@@ -24,4 +24,9 @@ export class AdminService
 	{
 		this.http.post<IResponse>("/admin/update-fair", { fair: enabled }).subscribe(callback);
 	}
+	
+	public locations(callback: ((response: { locations: { place: string }[] }) => void))
+	{
+		this.http.get<{ locations: { place: string }[] }>("/admin/fair-locations").subscribe(callback);
+	}
 }

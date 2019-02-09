@@ -1,0 +1,102 @@
+{
+	"packages":
+	[
+		{
+			"title": "Generalni pokrovitelj",
+			"content":
+			[
+				"Stand 4x velicine",
+				"Logo i 2 strane u boji u brosuri",
+				"Logo na promo majicama trostruke velicine"
+			],
+			"videopromotion": 15,
+			"nolessons": 2,
+			"noworkshops": 1,
+			"nopresentation": 0,
+			"price": 30000,
+			"maxcompanies": 1
+		},
+		{
+			"title": "Zlatni pokrovitelj",
+			"content":
+			[
+				"Stand 3x velicine",
+				"Logo i 2 strane u boji u brosuri",
+				"Logo na promo majicama 3x velicine"
+			],
+			"videopromotion": 10,
+			"nolessons": 1,
+			"noworkshops": 1,
+			"nopresentation": 1,
+			"price": 25000,
+			"maxcompanies": 1
+		},
+		{
+			"title": "Srebrni pokrovitelj",
+			"content":
+			[
+				"Stand 2x velicine",
+				"Logo i 2 strane u boji u brosuri",
+				"Logo na promo majicama 2x velicine"
+			],
+			"videopromotion": 5,
+			"nolessons": 1,
+			"noworkshops": 0,
+			"nopresentation": 1,
+			"price": 20000,
+			"maxcompanies": 2
+		},
+		{
+			"title": "Bronzani pokrovitelj",
+			"content":
+			[
+				"Stand 2x velicine",
+				"Logo i 1 strane u boji u brosuri",
+				"Logo na promo majicama standardne velicine"
+			],
+			"videopromotion": 3,
+			"nolessons": 1,
+			"noworkshops": 0,
+			"nopresentation": 0,
+			"price": 15000,
+			"maxcompanies": 3
+		},
+		{
+			"title": "Standardni paket",
+			"content":
+			[
+				"Stand 1x velicine",
+				"Logo i osnovne info u brosuri"
+			],
+			"videopromotion": 0,
+			"nolessons": 0,
+			"noworkshops": 0,
+			"nopresentation": 0,
+			"price": 10000,
+			"maxcompanies": "-"
+		}
+	],
+	"additional":
+	[
+		{
+			"title": "Flajer u brosuri",
+			"price": 4000
+		},
+		{
+			"title": "Prednja unutrasnja korica brosure",
+			"price": 2000
+		},
+		{
+			"title": "Dodatna strana u boji u brosuri",
+			"price": 3000
+		},
+		{
+			"title": "Doplata za brendiranje standa",
+			"price": 5000
+		},
+		{
+			"title": "Dodatna rezentacija kompanije u trajanju 45min",
+			"price": 10000
+		}
+	]
+}

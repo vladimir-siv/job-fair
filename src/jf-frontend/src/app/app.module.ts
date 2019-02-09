@@ -1,7 +1,10 @@
 import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
 import { AppRoutingModule } from "./app-routing.module";
 import { FormsModule } from "@angular/forms";
+import { MatStepperModule } from "@angular/material/stepper";
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from "ng-pick-datetime";
 import { PopupsModule } from "./popups/popups.module";
 import { InputsModule } from "./inputs/inputs.module";
 import { AjaxModule } from "./ajax/ajax.module";
@@ -19,6 +22,7 @@ import { ApplicationPageComponent } from "./application-page/application-page.co
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
+import { OWL_DATE_TIME_LOCALE } from "ng-pick-datetime";
 import { InjectionContext } from "./DependencyInjection/injection-context.service";
 
 @NgModule
@@ -41,14 +45,19 @@ import { InjectionContext } from "./DependencyInjection/injection-context.servic
 	imports:
 	[
 		BrowserModule,
+		BrowserAnimationsModule,
 		AppRoutingModule,
 		FormsModule,
+		MatStepperModule,
+		OwlDateTimeModule,
+		OwlNativeDateTimeModule,
 		PopupsModule,
 		InputsModule,
 		AjaxModule
 	],
 	providers:
 	[
+		{ provide: OWL_DATE_TIME_LOCALE, useValue: "sr" },
 		InjectionContext
 	],
 	bootstrap: [AppComponent]
