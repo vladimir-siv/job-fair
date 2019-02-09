@@ -17,7 +17,7 @@ export class PopupComponent implements OnInit, AfterViewInit
 	ngOnInit() { }
 	ngAfterViewInit() { }
 	
-	public show(): void { this.popup.show(); }
-	public hide(): void { this.popup.hide(); }
-	public toggle(): void { this.popup.toggle(); }
+	public show(): void { this.popup.show(); this.feed.onShow(); }
+	public hide(): void { this.popup.hide(); this.feed.onHide(); }
+	public toggle(): void { this.popup.toggle(); this.feed.onToggle(); }
 }

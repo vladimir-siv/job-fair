@@ -16,4 +16,8 @@ export abstract class PopupFeed implements OnInit, AfterViewInit
 	
 	ngOnInit() { }
 	ngAfterViewInit() { }
+	
+	public onShow() { }
+	public onHide() { }
+	public onToggle() { }
 }

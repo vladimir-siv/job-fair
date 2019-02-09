@@ -49,7 +49,17 @@ export interface IFairInfo
 	locations: { name: string }[],
 	applications:
 	{
-		// @NotYetImplemented
-		company: string
+		company: string,
+		package: number,
+		additional: number[],
+		accepted: boolean | undefined,
+		comment: string,
+		events:
+		{
+			eventtype: string,
+			location: string,
+			start: Date,
+			end: Date
+		}[]
 	}[]
 }

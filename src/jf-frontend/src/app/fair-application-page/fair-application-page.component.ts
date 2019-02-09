@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { InjectionContext } from "../DependencyInjection/injection-context.service";
 import { DatabaseManagerService } from "../ajax/services/database-manager.service";
+import { IAccountInfo } from "../models/account.model";
 import { IFairInfo } from "../models/fair.model";
+import { FairApplicationDetailsPopupFeedComponent } from "../popups/fair-application-details-popup-feed/fair-application-details-popup-feed.component";
 
 @Component
 ({
@@ -17,6 +19,10 @@ export class FairApplicationPageComponent implements OnInit
 		private db: DatabaseManagerService
 	) { }
 	
+	@ViewChild("confirm") private confirm: FairApplicationDetailsPopupFeedComponent;
+	
+	private accinfo: IAccountInfo;
+	
 	private allowed: boolean = false;
 	private fairinfo: IFairInfo;
 	
@@ -25,6 +31,8 @@ export class FairApplicationPageComponent implements OnInit
 	
 	ngOnInit()
 	{
+		this.context.app.accinfo.fetch(value => this.accinfo = value);
+		
 		this.db.env(response =>
 		{
 			if (response.env)
@@ -56,6 +64,6 @@ export class FairApplicationPageComponent implements OnInit
 			return;
 		}
 		
-		
+		this.context.app.showPopup(this.confirm);
 	}
 }

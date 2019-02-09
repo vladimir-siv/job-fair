@@ -7,6 +7,7 @@ import { InputsModule } from "../inputs/inputs.module";
 import { PopupComponent } from "./popup/popup.component";
 import { LoginPopupFeedComponent } from "./login-popup-feed/login-popup-feed.component";
 import { RegisterPopupFeedComponent } from "../popups/register-popup-feed/register-popup-feed.component";
+import { FairApplicationDetailsPopupFeedComponent } from "../popups/fair-application-details-popup-feed/fair-application-details-popup-feed.component";
 import { AlertComponent } from "./alert/alert.component";
 import { PromptAlertFeedComponent } from "../popups/prompt-alert-feed/prompt-alert-feed.component";
 
@@ -17,6 +18,7 @@ import { PromptAlertFeedComponent } from "../popups/prompt-alert-feed/prompt-ale
 		PopupComponent,
 		LoginPopupFeedComponent,
 		RegisterPopupFeedComponent,
+		FairApplicationDetailsPopupFeedComponent,
 		AlertComponent,
 		PromptAlertFeedComponent
 	],
@@ -32,6 +34,7 @@ import { PromptAlertFeedComponent } from "../popups/prompt-alert-feed/prompt-ale
 		PopupComponent,
 		LoginPopupFeedComponent,
 		RegisterPopupFeedComponent,
+		FairApplicationDetailsPopupFeedComponent,
 		AlertComponent,
 		PromptAlertFeedComponent
 	]

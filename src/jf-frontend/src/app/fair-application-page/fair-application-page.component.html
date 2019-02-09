@@ -1,5 +1,7 @@
+<fair-application-details-popup-feed #confirm [accinfo]="accinfo" [fairinfo]="fairinfo" [package]="package" [additional]="additional"></fair-application-details-popup-feed>
+
 <div class="container-fluid mt-5">
-	<ng-container *ngIf="allowed && fairinfo; else __else_1">
+	<ng-container *ngIf="accinfo && accinfo.company && allowed && fairinfo; else __else_1">
 		<div class="card w-75 mx-auto my-2">
 			<h5 class="card-header">Apply for {{ fairinfo.name }}</h5>
 			<div class="card-body py-2">
