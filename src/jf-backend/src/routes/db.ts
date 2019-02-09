@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import env from "../models/env";
 import user from "../models/user";
+import loc from "../models/loc";
+import fair from "../models/fair";
 
 let router = express.Router();
 
@@ -177,6 +179,54 @@ router.post("/jobs", (req, res, next) =>
 		}
 		
 		res.status(200).json({ results: results });
+	});
+});
+
+router.get("/current-fair", (req, res, next) =>
+{
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ fair: undefined });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ fair: undefined });
+		}
+		
+		// @ts-ignore
+		loc.find({ place: data[0].place }, (err, locs) =>
+		{
+			if (err)
+			{
+				console.log("Could not find locations");
+				next(err);
+			}
+			
+			if (!locs)
+			{
+				return res.status(200).json({ fair: undefined });
+			}
+			
+			let currFair = data[0].toJSON();
+			
+			// @ts-ignore
+			currFair.locations = locs.location;
+			
+			res.status(200).json({ fair: currFair });
+		});
 	});
 });
 

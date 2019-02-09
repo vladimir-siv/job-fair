@@ -42,6 +42,7 @@ router.get("/job-search", redirectIfNotStudent);
 router.get("/new-opening", redirectIfNotCompany);
 router.get("/opening/*", redirectToIndex);
 router.get("/application/*", redirectIfNotCompany);
+router.get("/fair-application", redirectIfNotCompany);
 router.get("/admin", redirectIfNotAdmin);
 router.all("/admin/*", redirectIfNotAdmin);
 

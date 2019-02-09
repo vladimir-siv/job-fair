@@ -9,7 +9,6 @@
 		<h5 class="card-header">Create new fair</h5>
 		<div class="card-body">
 			<mat-horizontal-stepper [linear]="true">
-				
 				<mat-step label="Fair information">
 					<div class="container-fluid mb-4 w-100">
 						<input type="text" class="form-control" placeholder="Fair Name" [(ngModel)]="fairinfo.name">
@@ -26,7 +25,6 @@
 						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
 					</div>
 				</mat-step>
-				
 				<mat-step label="Logo & Timings">
 					<div class="container-fluid mb-4">
 						<input-file #logo accept="image/*" mode="single" class="form-control" style="padding-top: 1px; padding-left: 3px;" btn-class="btn btn-info p-1" text="Attach logo"></input-file>
@@ -39,7 +37,6 @@
 						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
 					</div>
 				</mat-step>
-				
 				<mat-step label="Packages">
 					<div class="container-fluid mb-4">
 						<div class="my-2">
@@ -85,7 +82,6 @@
 						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext>Next -&gt;</button>
 					</div>
 				</mat-step>
-				
 				<mat-step label="Overview">
 					<div class="container-fluid mb-4">
 						<div class="my-2">
@@ -142,11 +138,9 @@
 						<button type="button" class="btn btn-primary btn-sm w-25" style="float: right;" mat-button matStepperNext disabled>Next -&gt;</button>
 					</div>
 				</mat-step>
-				
 			</mat-horizontal-stepper>
 		</div>
 	</div>
-	
 	<div class="card w-50 mx-auto my-2">
 		<h5 class="card-header">Enable/Disable CV Editing</h5>
 		<div class="card-body">

@@ -1,0 +1,76 @@
+<div class="container-fluid mt-5">
+	<ng-container *ngIf="allowed && fairinfo; else __else_1">
+		<div class="card w-75 mx-auto my-2">
+			<h5 class="card-header">Apply for {{ fairinfo.name }}</h5>
+			<div class="card-body py-2">
+				<div class="input-group my-2">
+					<label class="form-control w-25">Starting on:</label>
+					<label class="form-control w-75">{{ fairinfo.start }}</label>
+				</div>
+				<div class="input-group my-2">
+					<label class="form-control w-25">Ending on:</label>
+					<label class="form-control w-75">{{ fairinfo.end }}</label>
+				</div>
+				<div class="input-group my-2">
+					<label class="form-control w-25">At:</label>
+					<label class="form-control w-75">{{ fairinfo.place }}</label>
+				</div>
+				<div class="input-group my-2">
+					<label class="form-control w-25">About:</label>
+					<label class="form-control w-75">{{ fairinfo.about }}</label>
+				</div>
+				<hr>
+				<div class="input-group my-2">
+					<div class="input-group-prepend">
+						<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-albums mx-auto"></i></span>
+					</div>
+					<select class="form-control" [(ngModel)]="package">
+						<option *ngFor="let one of fairinfo.packages; index as i" [ngValue]="i">{{ one.title }}</option>
+					</select>
+				</div>
+				<div *ngIf="package != undefined && fairinfo.packages[package]" class="mt-2">
+					<div class="input-group my-2">
+						<label class="form-control w-50">Video Promotion Length [min]:</label>
+						<label class="form-control w-50">{{ fairinfo.packages[package].videopromotion }}</label>
+					</div>
+					<div class="input-group my-2">
+						<label class="form-control w-50">Number of Lessons:</label>
+						<label class="form-control w-50">{{ fairinfo.packages[package].nolessons }}</label>
+					</div>
+					<div class="input-group my-2">
+						<label class="form-control w-50">Number of Workshops:</label>
+						<label class="form-control w-50">{{ fairinfo.packages[package].noworkshops }}</label>
+					</div>
+					<div class="input-group my-2">
+						<label class="form-control w-50">Number of Presentations:</label>
+						<label class="form-control w-50">{{ fairinfo.packages[package].nopresentation }}</label>
+					</div>
+					<div class="input-group my-2">
+						<label class="form-control w-50">Price:</label>
+						<label class="form-control w-50">{{ fairinfo.packages[package].price }} RSD</label>
+					</div>
+					<div class="input-group mt-2">
+						<label class="form-control w-100">Content:</label>
+						<div class="w-75 mx-auto">
+							<label *ngFor="let one of fairinfo.packages[package].content" class="form-control w-100 mt-2 mb-0">{{ one }}</label>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="input-group my-2">
+					<label class="form-control w-100">Additional content:</label>
+					<ul class="list-group w-75 mx-auto mt-2">
+						<li *ngFor="let one of additional; index as i" class="list-group-item {{ one }} w-100 cursor-pointer" (click)="select(i)">{{ fairinfo.additional[i].title }} - {{ fairinfo.additional[i].price }} RSD</li>
+					</ul>
+				</div>
+				<hr>
+				<button type="button" class="btn btn-success btn-sm btn-block mb-2" (click)="apply()">Apply now!</button>
+			</div>
+		</div>
+	</ng-container>
+	<ng-template #__else_1>
+		<div class="alert alert-primary pb-0" role="alert">
+			<p>No possible <b>fair applications</b> found at the current time.</p>
+		</div>
+	</ng-template>
+</div>

@@ -9,6 +9,7 @@ import { JobSearchPageComponent } from "./job-search-page/job-search-page.compon
 import { NewOpeningPageComponent } from "./new-opening-page/new-opening-page.component";
 import { OpeningPageComponent } from "./opening-page/opening-page.component";
 import { ApplicationPageComponent } from "./application-page/application-page.component";
+import { FairApplicationPageComponent } from "./fair-application-page/fair-application-page.component";
 import { AdminPageComponent } from "./admin-page/admin-page.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 
@@ -25,6 +26,7 @@ const routes: Routes =
 	{ path: "new-opening", component: NewOpeningPageComponent },
 	{ path: "opening/:company/:opening", component: OpeningPageComponent },
 	{ path: "application/:opening/:index", component: ApplicationPageComponent },
+	{ path: "fair-application", component: FairApplicationPageComponent },
 	{ path: "admin", component: AdminPageComponent },
 	{ path: "**", component: PageNotFoundComponent }
 ];
