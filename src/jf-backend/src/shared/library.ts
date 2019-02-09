@@ -100,5 +100,22 @@ export default
 		}
 		
 		return cv;
+	},
+	
+	parseDate(datetime: string)
+	{
+		datetime = datetime.substring(0, datetime.length - 1);
+		let dt = datetime.split('T');
+		let date = new Date(dt[0]);
+		
+		let time = dt[1].split(':');
+		date.setHours(parseInt(time[0]));
+		date.setMinutes(parseInt(time[1]));
+		
+		let sm = time[2].split('.');
+		date.setSeconds(parseInt(sm[0]));
+		date.setMilliseconds(parseInt(sm[1]));
+		
+		return date;
 	}
 }

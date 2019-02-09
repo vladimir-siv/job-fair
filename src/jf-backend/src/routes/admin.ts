@@ -1,6 +1,10 @@
 import express from "express";
+import fileupload from "express-fileupload";
+import fs from "fs";
+import path from "path";
 import env from "../models/env";
 import loc from "../models/loc";
+import fair from "../models/fair";
 import sharedlib from "../shared/library";
 
 let router = express.Router();
@@ -145,6 +149,89 @@ router.get("/fair-locations", (req, res, next) =>
 		}
 		
 		res.status(200).json({ locations: data ? data : undefined });
+	});
+});
+
+router.post("/create-fair", (req, res, next) =>
+{
+	if
+	(
+		req.body.fairinfo == undefined
+		||
+		req.files == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
+	
+	let uploads = <{ files: fileupload.UploadedFile[] }>req.files;
+	
+	if (uploads.files == undefined || uploads.files.length == 0)
+	{
+		return res.status(200).json({ result: "danger", message: "Logo not present." });
+	}
+	
+	for (let i = 0; i < uploads.files.length; ++i)
+	{
+		if (!uploads.files[i].mimetype.startsWith("image/"))
+		{
+			return res.status(200).json({ result: "danger", message: "Only images are allowd." });
+		}
+	}
+	
+	let fairinfo = JSON.parse(req.body.fairinfo);
+	fairinfo.start = sharedlib.parseDate(fairinfo.start);
+	fairinfo.end = sharedlib.parseDate(fairinfo.end);
+	
+	if (fairinfo.start.valueOf() > fairinfo.end.valueOf())
+	{
+		return res.status(200).json({ result: "danger", message: "Start date&time must be before end date&time." });
+	}
+	
+	let now = Date.now();
+	let newStartTime = fairinfo.start.valueOf();
+	
+	if (newStartTime < now)
+	{
+		return res.status(200).json({ result: "danger", message: "The fair must start in the future." });
+	}
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (data && data.length > 0)
+		{
+			// @ts-ignore
+			let lastEndTime = data[0].end.valueOf();
+			
+			if (now < lastEndTime || newStartTime < lastEndTime)
+			{
+				return res.status(200).json({ result: "danger", message: "The timing for the fair is not valid (too early or the last fair isn't over yet)." });
+			}
+		}
+		
+		fair.create(fairinfo, async (err: any, data: Document[]) =>
+		{
+			if (err)
+			{
+				console.log("Could not create new fair");
+				return next(err);
+			}
+			
+			let dir = path.join(__dirname, "../../storage/fairs/", fairinfo.name + "-" + newStartTime);
+			fs.mkdirSync(dir);
+			
+			await uploads.files[0].mv(path.join(dir, "logo" + uploads.files[0].name.substring(uploads.files[0].name.lastIndexOf('.'))));
+			for (let i = 1; i < uploads.files.length; ++i)
+				await uploads.files[i].mv(path.join(dir, "images", uploads.files[i].name));
+			
+			return res.status(200).json({ result: "success", message: "Successfully created new fair." });
+		});
 	});
 });
 

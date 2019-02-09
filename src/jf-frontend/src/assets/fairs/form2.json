@@ -73,7 +73,7 @@
 			"noworkshops": 0,
 			"nopresentation": 0,
 			"price": 10000,
-			"maxcompanies": "-"
+			"maxcompanies": -1
 		}
 	],
 	"additional":

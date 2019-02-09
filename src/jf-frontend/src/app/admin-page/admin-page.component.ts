@@ -120,6 +120,18 @@ export class AdminPageComponent implements OnInit
 			return;
 		}
 		
+		let form: FormData = new FormData();
 		
+		form.append("files[0]", logo[0], logo[0].name);
+		if (images)
+			for (let i = 0; i < images.length; ++i)
+				form.append("files[" + (i + 1) + "]", images[i], images[i].name);
+		
+		form.append("fairinfo", JSON.stringify(this.fairinfo));
+		
+		this.admin.createfair(form, response =>
+		{
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
 	}
 }

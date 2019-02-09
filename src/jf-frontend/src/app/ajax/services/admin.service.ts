@@ -29,4 +29,9 @@ export class AdminService
 	{
 		this.http.get<{ locations: { place: string }[] }>("/admin/fair-locations").subscribe(callback);
 	}
+	
+	public createfair(form: FormData, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/admin/create-fair", form).subscribe(callback);
+	}
 }
