@@ -323,7 +323,15 @@ router.post("/update-maxcompanies", (req, res, next) =>
 
 router.post("/accept-application", (req, res, next) =>
 {
-	
+	if
+	(
+		Number.isNaN(req.body.application)
+		||
+		req.body.events == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
 	
 	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
 	{
@@ -347,7 +355,34 @@ router.post("/accept-application", (req, res, next) =>
 			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
 		}
 		
+		let currFair = data[0].toJSON();
 		
+		if (req.body.application >= currFair.applications.length)
+		{
+			return res.status(200).json({ result: "danger", message: "Invalid application." });
+		}
+		
+		for (let i = 0; i < req.body.events.length; ++i)
+		{
+			if (!sharedlib.validevent(currFair, req.body.events[i]))
+			{
+				return res.status(200).json({ result: "danger", message: "Event \"" + req.body.events[i].eventtype + "\" clashes with other event(s)." });
+			}
+		}
+		
+		currFair.applications[req.body.application].accepted = true;
+		currFair.applications[req.body.application].events = req.body.events;
+		
+		data[0].update(currFair, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update fair info");
+				return next(err);
+			}
+			
+			res.status(200).json({ result: "success", message: "Successfully accepted application." });
+		});
 	});
 });
 
@@ -408,9 +443,19 @@ router.post("/reject-application", (req, res, next) =>
 	});
 });
 
-router.post("update-application", (req, res, next) =>
+router.post("/update-event", (req, res, next) =>
 {
-	
+	if
+	(
+		Number.isNaN(req.body.application)
+		||
+		Number.isNaN(req.body.index)
+		||
+		req.body.data == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
 	
 	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
 	{
@@ -434,7 +479,30 @@ router.post("update-application", (req, res, next) =>
 			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
 		}
 		
+		let currFair = data[0].toJSON();
 		
+		if (req.body.application >= currFair.applications.length)
+		{
+			return res.status(200).json({ result: "danger", message: "Invalid application." });
+		}
+		
+		if (!sharedlib.validevent(currFair, req.body.data))
+		{
+			return res.status(200).json({ result: "danger", message: "Event \"" + req.body.data.eventtype + "\" clashes with other event(s)." });
+		}
+		
+		currFair.applications[req.body.application].events[req.body.index] = req.body.data;
+		
+		data[0].update(currFair, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update fair info");
+				return next(err);
+			}
+			
+			res.status(200).json({ result: "success", message: "Successfully updated application event." });
+		});
 	});
 });
 

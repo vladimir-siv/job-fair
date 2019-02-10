@@ -40,9 +40,9 @@ export class AdminService
 		this.http.post<IResponse>("/admin/update-maxcompanies", { packageno: packageno, maxcompanies: maxcompanies }).subscribe(callback);
 	}
 	
-	public acceptapplication()
+	public acceptapplication(application: number, events: { eventtype: string, location: string, start: Date, end: Date }[], callback: ((response: IResponse) => void))
 	{
-		
+		this.http.post<IResponse>("/admin/accept-application", { application: application, events: events }).subscribe(callback);
 	}
 	
 	public rejectapplication(application: number, comment: string, callback: ((response: IResponse) => void))
@@ -50,8 +50,8 @@ export class AdminService
 		this.http.post<IResponse>("/admin/reject-application", { application: application, comment: comment }).subscribe(callback);
 	}
 	
-	public updateapplication()
+	public updateevent(application: number, index: number, data: { eventtype: string, location: string, start: Date, end: Date }, callback: ((response: IResponse) => void))
 	{
-		
+		this.http.post<IResponse>("/admin/update-event", { application: application, index: index, data: data }).subscribe(callback);
 	}
 }

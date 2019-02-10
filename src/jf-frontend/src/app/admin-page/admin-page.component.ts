@@ -154,9 +154,15 @@ export class AdminPageComponent implements OnInit
 	private selected: number;
 	accept()
 	{
-		// this.selected application => events
-		
-		
+		this.admin.acceptapplication(this.selected, this.current.applications[this.selected].events, response =>
+		{
+			if (response.result == "success")
+			{
+				this.current.applications[this.selected].accepted = true;
+			}
+			
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
 	}
 	
 	private oncomment = (comment: string) => this.reject(comment);
@@ -191,14 +197,17 @@ export class AdminPageComponent implements OnInit
 	private ondetails = () => this.details();
 	details()
 	{
-		this.context.app.hidePopup();
-		
 		if (this.current.applications[this.detailsf.event.application].accepted == undefined)
 		{
+			this.context.app.hidePopup();
 			return;
 		}
 		
-		// update
+		this.admin.updateevent(this.detailsf.event.application, this.detailsf.event.index, this.detailsf.event.data, response =>
+		{
+			this.context.app.hidePopup();
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
 	}
 	
 	// ======= ENV =======

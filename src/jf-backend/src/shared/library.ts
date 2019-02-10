@@ -81,7 +81,7 @@ export default
 		return "";
 	},
 	
-	parseCV(json: string)
+	parseCV(json: string): any
 	{
 		let cv = JSON.parse(json);
 		
@@ -102,7 +102,7 @@ export default
 		return cv;
 	},
 	
-	parseDate(datetime: string)
+	parseDate(datetime: string): Date
 	{
 		datetime = datetime.substring(0, datetime.length - 1);
 		let dt = datetime.split('T');
@@ -117,5 +117,40 @@ export default
 		date.setMilliseconds(parseInt(sm[1]));
 		
 		return date;
+	},
+	
+	validevent(fair: any, event: { eventtype: string, location: string, start: Date, end: Date }): boolean
+	{
+		if (event.start.valueOf() > event.end.valueOf()) return false;
+		
+		if
+		(
+			event.start.valueOf() < fair.start.valueOf()
+			||
+			event.end.valueOf() > fair.end.valueOf()
+		) return false;
+		
+		for (let i = 0; i < fair.applications.length; ++i)
+		{
+			if (fair.applications[i].accepted)
+			{
+				for (let j = 0; j < fair.applications[i].events.length; ++j)
+				{
+					if (fair.applications[i].events[j].location == event.location)
+					{
+						let eevent = fair.applications[i].events[j];
+						
+						if
+						(
+							event.start.valueOf() < eevent.end.valueOf()
+							&&
+							event.end.valueOf() > eevent.start.valueOf()
+						) return false;
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 }
