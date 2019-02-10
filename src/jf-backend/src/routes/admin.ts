@@ -321,4 +321,121 @@ router.post("/update-maxcompanies", (req, res, next) =>
 	});
 });
 
+router.post("/accept-application", (req, res, next) =>
+{
+	
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		
+	});
+});
+
+router.post("/reject-application", (req, res, next) =>
+{
+	if
+	(
+		Number.isNaN(req.body.application)
+		||
+		req.body.comment == undefined
+	)
+	{
+		return res.status(200).json({ result: "danger", message: "Not all fields present." });
+	}
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		let currFair = data[0].toJSON();
+		
+		if (req.body.application >= currFair.applications.length)
+		{
+			return res.status(200).json({ result: "danger", message: "Invalid application." });
+		}
+		
+		currFair.applications[req.body.application].accepted = false;
+		currFair.applications[req.body.application].comment = req.body.comment;
+		
+		data[0].update(currFair, (err, raw) =>
+		{
+			if (err)
+			{
+				console.log("Could not update fair info");
+				return next(err);
+			}
+			
+			res.status(200).json({ result: "success", message: "Successfully rejected application." });
+		});
+	});
+});
+
+router.post("update-application", (req, res, next) =>
+{
+	
+	
+	fair.find({}).sort({ end: 'desc' }).limit(1).exec((err, data) =>
+	{
+		if (err)
+		{
+			console.log("Could not find last fair");
+			return next(err);
+		}
+		
+		if (!data || data.length == 0)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		// @ts-ignore
+		let lastStartTime = data[0].start.valueOf();
+		let now = Date.now();
+		
+		if (now > lastStartTime)
+		{
+			return res.status(200).json({ result: "danger", message: "No fairs found at current time." });
+		}
+		
+		
+	});
+});
+
 export default router;

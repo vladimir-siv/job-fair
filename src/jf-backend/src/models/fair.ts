@@ -42,12 +42,16 @@ let fair = new mongoose.Schema
 			accepted: Boolean,
 			comment: String,
 			events:
-			[{
-				eventtype: String,
-				location: String,
-				start: Date,
-				end: Date
-			}]
+			{
+				type:
+				[{
+					eventtype: String,
+					location: String,
+					start: Date,
+					end: Date
+				}],
+				default: []
+			}
 		}],
 		default: []
 	}

@@ -111,6 +111,11 @@ export class AppComponent implements AfterViewInit
 		this.popup.show();
 	}
 	
+	public hidePopup()
+	{
+		this.popup.hide();
+	}
+	
 	public showAlert(feed: AlertFeed)
 	{
 		this.alert.feed = feed;
@@ -120,5 +125,10 @@ export class AppComponent implements AfterViewInit
 	public showPromptAlert(type: string, content: string, heading: string = "", dismissable: boolean = true)
 	{
 		this.showAlert(this.prompt.create(type, content, heading, dismissable));
+	}
+	
+	public hideAlert()
+	{
+		this.alert.hide();
 	}
 }

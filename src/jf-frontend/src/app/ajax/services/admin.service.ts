@@ -39,4 +39,19 @@ export class AdminService
 	{
 		this.http.post<IResponse>("/admin/update-maxcompanies", { packageno: packageno, maxcompanies: maxcompanies }).subscribe(callback);
 	}
+	
+	public acceptapplication()
+	{
+		
+	}
+	
+	public rejectapplication(application: number, comment: string, callback: ((response: IResponse) => void))
+	{
+		this.http.post<IResponse>("/admin/reject-application", { application: application, comment: comment }).subscribe(callback);
+	}
+	
+	public updateapplication()
+	{
+		
+	}
 }

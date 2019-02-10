@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<comment-popup-feed #commentf [callback]="oncomment"></comment-popup-feed>
+<event-details-popup-feed #detailsf [callback]="ondetails"></event-details-popup-feed>
 <owl-date-time #start [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
 <owl-date-time #end [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
 <owl-date-time #startcheck [firstDayOfWeek]="1" [showSecondsTimer]="true"></owl-date-time>
@@ -79,6 +81,57 @@
 					<ul class="list-group w-75 mx-auto mt-2">
 						<li *ngFor="let one of current.additional" class="list-group-item w-100">{{ one.title }} - {{ one.price }} RSD</li>
 					</ul>
+				</div>
+				<hr>
+				<button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="collapse" data-target="#applications">View Applications</button>
+				<div id="applications" class="collapse mx-auto my-2" style="width: 90%;">
+					<ng-container *ngFor="let one of current.applications; index as i">
+						<div class="input-group my-2">
+							<div class="input-group-prepend">
+								<span class="input-group-text" style="width: 50px"><i class="icon ion-ios-business mx-auto"></i></span>
+							</div>
+							<a role="button" class="form-control btn-link" data-toggle="collapse" href="#application-{{ i }}">{{ one.company }} <b class="text-dark">{{ status(i) }}</b></a>
+						</div>
+						<div id="application-{{ i }}" class="collapse">
+							<div class="input-group my-2">
+								<label class="form-control w-25">Package:</label>
+								<label class="form-control w-75">{{ current.packages[one.package].title }}</label>
+							</div>
+							<div class="input-group my-2">
+								<label class="form-control w-100">Additional:</label>
+								<div class="mx-auto w-75">
+									<label *ngFor="let _one of one.additional" class="form-control w-100 mt-2 mb-0">{{ current.additional[_one].title }}</label>
+								</div>
+							</div>
+							<div class="input-group my-2">
+								<label class="form-control w-100">Events:</label>
+								<div *ngIf="one.events" class="mx-auto w-75">
+									<button *ngFor="let _one of one.events; index as e" type="button" class="btn btn-link btn-block m-0" (click)="edit(i, e)">Event: {{ _one.eventtype }}</button>
+								</div>
+								<div *ngIf="one.accepted == undefined" class="mx-auto w-50">
+									<button type="button" class="btn btn-primary btn-sm w-25" style="float: left;" (click)="one.events.push({ eventtype: 'New event', location: '', start: now(), end: now() })">+</button>
+									<button type="button" class="btn btn-secondary btn-sm w-25" style="float: right;" (click)="one.events.pop()">-</button>
+								</div>
+							</div>
+							<ng-container *ngIf="one.accepted == undefined; else __else_2">
+								<div class="w-75 mx-auto my-2">
+									<button type="button" class="btn btn-success btn-sm w-25" style="float: left;" (click)="selected = i; accept()">Accept</button>
+									<button type="button" class="btn btn-danger btn-sm w-25" style="float: right;" (click)="selected = i; context.app.showPopup(commentf)">Reject</button>
+								</div>
+							</ng-container>
+							<ng-template #__else_2>
+								<div class="input-group w-100 my-2">
+									<label class="form-control w-25">Status:</label>
+									<ng-container *ngIf="one.accepted; else __else_3">
+										<label class="form-control w-75 text-success"><b>Accepted</b></label>
+									</ng-container>
+									<ng-template #__else_3>
+										<label class="form-control w-75 text-danger"><b>Rejected</b></label>
+									</ng-template>
+								</div>
+							</ng-template>
+						</div>
+					</ng-container>
 				</div>
 			</div>
 		</div>

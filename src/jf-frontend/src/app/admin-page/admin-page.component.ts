@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { InjectionContext } from "../DependencyInjection/injection-context.service";
 import { AdminService } from "../ajax/services/admin.service";
 import { DatabaseManagerService } from "../ajax/services/database-manager.service";
 import { FairInfo, IFairInfo } from "../models/fair.model";
 import { HttpClient } from "@angular/common/http";
+import { EventDetailsPopupFeedComponent } from "../popups/event-details-popup-feed/event-details-popup-feed.component";
 
 @Component
 ({
@@ -21,7 +22,9 @@ export class AdminPageComponent implements OnInit
 		private http: HttpClient
 	) { }
 	
+	now() { return new Date(); }
 	track(index: number, obj: any): any { return index; }
+	status(index: number) { return this.current.applications[index].accepted == undefined ? "[new]" : ""; }
 	parse(datetime: string)
 	{
 		let dt = datetime.split('T');
@@ -32,6 +35,8 @@ export class AdminPageComponent implements OnInit
 		date.setSeconds(parseInt(time[2]));
 		return date;
 	}
+	
+	@ViewChild("detailsf") private detailsf: EventDetailsPopupFeedComponent;
 	
 	private current: IFairInfo;
 	private fairinfo: FairInfo = new FairInfo();
@@ -46,6 +51,8 @@ export class AdminPageComponent implements OnInit
 		
 		this.reloadcurrentfair();
 	}
+	
+	// ======= FAIR =======
 	
 	reloadcurrentfair()
 	{
@@ -106,22 +113,6 @@ export class AdminPageComponent implements OnInit
 		});
 	}
 	
-	cv(enabled: boolean)
-	{
-		this.admin.cv(enabled, response =>
-		{
-			this.context.app.showPromptAlert(response.result, response.message);
-		});
-	}
-	
-	fair(enabled: boolean)
-	{
-		this.admin.fair(enabled, response =>
-		{
-			this.context.app.showPromptAlert(response.result, response.message);
-		});
-	}
-	
 	create(logo: FileList, images: FileList)
 	{
 		if (!logo)
@@ -153,6 +144,76 @@ export class AdminPageComponent implements OnInit
 	update(i: number)
 	{
 		this.admin.updatemaxcompanies(i, this.current.packages[i].maxcompanies, response =>
+		{
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
+	}
+	
+	// ======= EVENTS =======
+	
+	private selected: number;
+	accept()
+	{
+		// this.selected application => events
+		
+		
+	}
+	
+	private oncomment = (comment: string) => this.reject(comment);
+	reject(comment: string)
+	{
+		this.admin.rejectapplication(this.selected, comment, response =>
+		{
+			if (response.result == "success")
+			{
+				this.current.applications[this.selected].accepted = false;
+				this.current.applications[this.selected].events = [];
+			}
+			
+			this.context.app.hidePopup();
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
+	}
+	
+	edit(application: number, index: number)
+	{
+		this.detailsf.event =
+		{
+			application: application,
+			index: index,
+			locations: this.current.locations,
+			data: this.current.applications[application].events[index]
+		};
+		
+		this.context.app.showPopup(this.detailsf);
+	}
+	
+	private ondetails = () => this.details();
+	details()
+	{
+		this.context.app.hidePopup();
+		
+		if (this.current.applications[this.detailsf.event.application].accepted == undefined)
+		{
+			return;
+		}
+		
+		// update
+	}
+	
+	// ======= ENV =======
+	
+	cv(enabled: boolean)
+	{
+		this.admin.cv(enabled, response =>
+		{
+			this.context.app.showPromptAlert(response.result, response.message);
+		});
+	}
+	
+	fair(enabled: boolean)
+	{
+		this.admin.fair(enabled, response =>
 		{
 			this.context.app.showPromptAlert(response.result, response.message);
 		});
