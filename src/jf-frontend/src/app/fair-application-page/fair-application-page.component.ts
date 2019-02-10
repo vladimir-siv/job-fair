@@ -29,9 +29,16 @@ export class FairApplicationPageComponent implements OnInit
 	private package: number;
 	private additional: string[] = [];
 	
+	private applicationbarrier: boolean = false;
+	private application: any;
+	
 	ngOnInit()
 	{
-		this.context.app.accinfo.fetch(value => this.accinfo = value);
+		this.context.app.accinfo.fetch(value =>
+		{
+			this.accinfo = value;
+			this.checkapplication();
+		});
 		
 		this.db.env(response =>
 		{
@@ -48,7 +55,34 @@ export class FairApplicationPageComponent implements OnInit
 			if (this.fairinfo)
 				for (let i = 0; i < this.fairinfo.additional.length; ++i)
 					this.additional.push("");
+			
+			this.checkapplication();
 		});
+	}
+	
+	checkapplication()
+	{
+		if (!this.applicationbarrier)
+		{
+			this.applicationbarrier = true;
+			return;
+		}
+		
+		if (!this.fairinfo) return;
+		
+		for (let i = 0; i < this.fairinfo.applications.length; ++i)
+		{
+			if (this.fairinfo.applications[i].company == this.accinfo.username)
+			{
+				this.application = this.fairinfo.applications[i];
+				
+				this.package = this.fairinfo.applications[i].package;
+				for (let a = 0; a < this.fairinfo.applications[i].additional.length; ++a)
+					this.additional[this.fairinfo.applications[i].additional[a]] = "active";
+				
+				return;
+			}
+		}
 	}
 	
 	select(i: number)

@@ -72,7 +72,44 @@
 					</ul>
 				</div>
 				<hr>
-				<button type="button" class="btn btn-success btn-sm btn-block mb-2" (click)="apply()">Apply now!</button>
+				<ng-container *ngIf="application; else __else_2">
+					<div class="input-group my-2">
+						<label class="form-control w-25">Status:</label>
+						<ng-container *ngIf="application.accepted == undefined; else __else_3">
+							<label class="form-control w-75 text-primary"><b>Awaiting confirmation</b></label>
+						</ng-container>
+						<ng-template #__else_3>
+							<ng-container *ngIf="application.accepted; else __else_4">
+								<label class="form-control w-75 text-success"><b>Accepted</b></label>
+								<div *ngFor="let one of application.events" class="w-100 my-2">
+									<div class="input-group w-100">
+										<label class="form-control w-25">Event:</label>
+										<label class="form-control w-75">{{ one.eventtype }}</label>
+									</div>
+									<div class="input-group w-100">
+										<label class="form-control w-25">Location:</label>
+										<label class="form-control w-75">{{ one.location }}</label>
+									</div>
+									<div class="input-group w-100">
+										<label class="form-control w-25">Start:</label>
+										<label class="form-control w-75">{{ one.start }}</label>
+									</div>
+									<div class="input-group w-100">
+										<label class="form-control w-25">End:</label>
+										<label class="form-control w-75">{{ one.end }}</label>
+									</div>
+								</div>
+							</ng-container>
+							<ng-template #__else_4>
+								<label class="form-control w-75 text-danger"><b>Rejected</b></label>
+								<textarea class="form-control w-100" style="resize: none;" rows="5" placeholder="Comment" [(ngModel)]="application.comment" disabled></textarea>
+							</ng-template>
+						</ng-template>
+					</div>
+				</ng-container>
+				<ng-template #__else_2>
+					<button type="button" class="btn btn-success btn-sm btn-block mb-2" (click)="apply()">Apply now!</button>
+				</ng-template>
 			</div>
 		</div>
 	</ng-container>
