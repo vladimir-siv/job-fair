@@ -35,7 +35,7 @@ let user = new mongoose.Schema
 				username: String,
 				rating: Number
 			}],
-			default: undefined
+			default: void 0
 		},
 		openings:
 		{
@@ -56,10 +56,10 @@ let user = new mongoose.Schema
 						cv: Object,
 						textcover: String,
 					}],
-					default: undefined
+					default: void 0
 				}
 			}],
-			default: undefined
+			default: void 0
 		}
 	}
 });
