@@ -362,12 +362,43 @@ router.post("/accept-application", (req, res, next) =>
 			return res.status(200).json({ result: "danger", message: "Invalid application." });
 		}
 		
+		if (currFair.applications[req.body.application].accepted != undefined)
+		{
+			return res.status(200).json({ result: "danger", message: "Application was already processed." });
+		}
+		
 		for (let i = 0; i < req.body.events.length; ++i)
 		{
+			req.body.events[i].start = new Date(req.body.events[i].start);
+			req.body.events[i].end = new Date(req.body.events[i].end);
+			
+			for (let j = 0; j < i; ++j)
+			{
+				if (sharedlib.checkclash(req.body.events[i], req.body.events[j]))
+				{
+					return res.status(200).json({ result: "danger", message: "Event \"" + req.body.events[i].eventtype + "\" clashes with other event(s)." });
+				}
+			}
+			
 			if (!sharedlib.validevent(currFair, req.body.events[i]))
 			{
 				return res.status(200).json({ result: "danger", message: "Event \"" + req.body.events[i].eventtype + "\" clashes with other event(s)." });
 			}
+		}
+		
+		let p = currFair.applications[req.body.application].package;
+		let usage = 0;
+		for (let i = 0; i < currFair.applications.length; ++i)
+		{
+			if (currFair.applications[i].package == p && currFair.applications[i].accepted)
+			{
+				++usage;
+			}
+		}
+		
+		if (usage >= currFair.packages[p].maxcompanies)
+		{
+			return res.status(200).json({ result: "danger", message: "This package has been fully distributed. Please, increase the number of maximum companies before proceeding." });
 		}
 		
 		currFair.applications[req.body.application].accepted = true;
@@ -425,6 +456,11 @@ router.post("/reject-application", (req, res, next) =>
 		if (req.body.application >= currFair.applications.length)
 		{
 			return res.status(200).json({ result: "danger", message: "Invalid application." });
+		}
+		
+		if (currFair.applications[req.body.application].accepted != undefined)
+		{
+			return res.status(200).json({ result: "danger", message: "Application was already processed." });
 		}
 		
 		currFair.applications[req.body.application].accepted = false;
@@ -485,6 +521,19 @@ router.post("/update-event", (req, res, next) =>
 		{
 			return res.status(200).json({ result: "danger", message: "Invalid application." });
 		}
+		
+		if (!currFair.applications[req.body.application].accepted)
+		{
+			return res.status(200).json({ result: "danger", message: "Application is not accepted." });
+		}
+		
+		if (req.body.index >= currFair.applications[req.body.application].events.length)
+		{
+			return res.status(200).json({ result: "danger", message: "Invalid event." });
+		}
+		
+		req.body.data.start = new Date(req.body.data.start);
+		req.body.data.end = new Date(req.body.data.end);
 		
 		if (!sharedlib.validevent(currFair, req.body.data))
 		{

@@ -119,9 +119,21 @@ export default
 		return date;
 	},
 	
+	checkclash(e1: { eventtype: string, location: string, start: Date, end: Date }, e2: { eventtype: string, location: string, start: Date, end: Date }): boolean
+	{
+		if
+		(
+			e1.start.valueOf() < e2.end.valueOf()
+			&&
+			e1.end.valueOf() > e2.start.valueOf()
+		) return true;
+		
+		return false;
+	},
+	
 	validevent(fair: any, event: { eventtype: string, location: string, start: Date, end: Date }): boolean
 	{
-		if (event.start.valueOf() > event.end.valueOf()) return false;
+		if (event.start.valueOf() >= event.end.valueOf()) return false;
 		
 		if
 		(
@@ -138,14 +150,7 @@ export default
 				{
 					if (fair.applications[i].events[j].location == event.location)
 					{
-						let eevent = fair.applications[i].events[j];
-						
-						if
-						(
-							event.start.valueOf() < eevent.end.valueOf()
-							&&
-							event.end.valueOf() > eevent.start.valueOf()
-						) return false;
+						if (this.checkclash(event, fair.applications[i].events[j])) return false;
 					}
 				}
 			}
